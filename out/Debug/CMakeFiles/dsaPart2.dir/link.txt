@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/dsaPart2.dir/src/main.cpp.o -o dsaPart2  libdsaPart2_lib.a

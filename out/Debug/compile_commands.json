@@ -1,0 +1,38 @@
+[
+{
+  "directory": "/home/loh-yen-kuan/Coding/dsaPart2/out/Debug",
+  "command": "/usr/bin/c++  -I/home/loh-yen-kuan/Coding/dsaPart2/include -g -std=gnu++17 -o CMakeFiles/dsaPart2_lib.dir/src/bracket_stage.cpp.o -c /home/loh-yen-kuan/Coding/dsaPart2/src/bracket_stage.cpp",
+  "file": "/home/loh-yen-kuan/Coding/dsaPart2/src/bracket_stage.cpp",
+  "output": "CMakeFiles/dsaPart2_lib.dir/src/bracket_stage.cpp.o"
+},
+{
+  "directory": "/home/loh-yen-kuan/Coding/dsaPart2/out/Debug",
+  "command": "/usr/bin/c++  -I/home/loh-yen-kuan/Coding/dsaPart2/include -g -std=gnu++17 -o CMakeFiles/dsaPart2_lib.dir/src/game_log.cpp.o -c /home/loh-yen-kuan/Coding/dsaPart2/src/game_log.cpp",
+  "file": "/home/loh-yen-kuan/Coding/dsaPart2/src/game_log.cpp",
+  "output": "CMakeFiles/dsaPart2_lib.dir/src/game_log.cpp.o"
+},
+{
+  "directory": "/home/loh-yen-kuan/Coding/dsaPart2/out/Debug",
+  "command": "/usr/bin/c++  -I/home/loh-yen-kuan/Coding/dsaPart2/include -g -std=gnu++17 -o CMakeFiles/dsaPart2_lib.dir/src/group_stage.cpp.o -c /home/loh-yen-kuan/Coding/dsaPart2/src/group_stage.cpp",
+  "file": "/home/loh-yen-kuan/Coding/dsaPart2/src/group_stage.cpp",
+  "output": "CMakeFiles/dsaPart2_lib.dir/src/group_stage.cpp.o"
+},
+{
+  "directory": "/home/loh-yen-kuan/Coding/dsaPart2/out/Debug",
+  "command": "/usr/bin/c++  -I/home/loh-yen-kuan/Coding/dsaPart2/include -g -std=gnu++17 -o CMakeFiles/dsaPart2_lib.dir/src/local_time.cpp.o -c /home/loh-yen-kuan/Coding/dsaPart2/src/local_time.cpp",
+  "file": "/home/loh-yen-kuan/Coding/dsaPart2/src/local_time.cpp",
+  "output": "CMakeFiles/dsaPart2_lib.dir/src/local_time.cpp.o"
+},
+{
+  "directory": "/home/loh-yen-kuan/Coding/dsaPart2/out/Debug",
+  "command": "/usr/bin/c++  -I/home/loh-yen-kuan/Coding/dsaPart2/include -g -std=gnu++17 -o CMakeFiles/dsaPart2_lib.dir/src/qualifiers.cpp.o -c /home/loh-yen-kuan/Coding/dsaPart2/src/qualifiers.cpp",
+  "file": "/home/loh-yen-kuan/Coding/dsaPart2/src/qualifiers.cpp",
+  "output": "CMakeFiles/dsaPart2_lib.dir/src/qualifiers.cpp.o"
+},
+{
+  "directory": "/home/loh-yen-kuan/Coding/dsaPart2/out/Debug",
+  "command": "/usr/bin/c++  -I/home/loh-yen-kuan/Coding/dsaPart2/include -g -std=gnu++17 -o CMakeFiles/dsaPart2.dir/src/main.cpp.o -c /home/loh-yen-kuan/Coding/dsaPart2/src/main.cpp",
+  "file": "/home/loh-yen-kuan/Coding/dsaPart2/src/main.cpp",
+  "output": "CMakeFiles/dsaPart2.dir/src/main.cpp.o"
+}
+]
