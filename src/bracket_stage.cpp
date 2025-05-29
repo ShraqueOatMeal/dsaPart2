@@ -20,14 +20,14 @@ bracket_stage::~bracket_stage() {
 }
 //
 // shuffle
-static void swapPlayer(qualifiers::Player &a, qualifiers::Player &b) {
+void bracket_stage::swapPlayer(qualifiers::Player &a, qualifiers::Player &b) {
   qualifiers::Player t = a;
   a = b;
   b = t;
 }
 
 
-static void shufflePlayers( qualifiers::Player arr[], int n )
+void bracket_stage::shufflePlayers( qualifiers::Player arr[], int n )
 {
     static std::mt19937 rng{ std::random_device{}() };
     std::shuffle( arr, arr + n, rng );
@@ -41,7 +41,7 @@ struct Node {
   Node(const qualifiers::Player &pl) : p(pl), next(nullptr) {}
 };
 
-static void enqueue(Node *&front, Node *&rear, const qualifiers::Player &pl,
+void bracket_stage::enqueue(Node *&front, Node *&rear, const qualifiers::Player &pl,
                     int &cnt) {
   Node *n = new Node(pl);
   if (!rear)
@@ -66,7 +66,7 @@ static qualifiers::Player dequeue(Node *&front, Node *&rear, int &cnt) {
   return pl;
 }
 
-bool winnerByOddsBracket(const qualifiers::Player &p1,
+bool bracket_stage::winnerByOddsBracket(const qualifiers::Player &p1,
                          const qualifiers::Player &p2) {
   int diff = p1.tier - p2.tier;
   if (diff < 0) diff = -diff;
@@ -79,8 +79,8 @@ bool winnerByOddsBracket(const qualifiers::Player &p1,
 
 static int knockoutMatchCounter = 1;
 
-void runKnockoutStage(qualifiers::Player players[], int count) {
-  shufflePlayers(players, count);
+void bracket_stage::runKnockoutStage(qualifiers::Player players[], int count) {
+  bracket_stage::shufflePlayers(players, count);
   std::cout << "\n-- Bracket Entrants: --\n";
   for (int i = 0; i < count; ++i) {
     std::cout << "[" << players[i].id << "] " << players[i].name << " "
@@ -91,7 +91,7 @@ void runKnockoutStage(qualifiers::Player players[], int count) {
   Node *front = nullptr, *rear = nullptr;
   int qCount = 0;
   for (int i = 0; i < count; ++i)
-    enqueue(front, rear, players[i], qCount);
+    bracket_stage::enqueue(front, rear, players[i], qCount);
 
   std::cout << "-- Single-Elimination --\n";
   while (qCount > 1) {
@@ -100,7 +100,7 @@ void runKnockoutStage(qualifiers::Player players[], int count) {
 
     std::cout << p1.id << " vs " << p2.id << " -> ";
     // use tier‐odds logic instead of direct rank compare
-    bool p1Wins = winnerByOddsBracket(p1, p2);
+    bool p1Wins = bracket_stage::winnerByOddsBracket(p1, p2);
     qualifiers::Player win = p1Wins ? p1 : p2;
     std::cout << "Winner: " << win.id << "\n";
 
@@ -115,7 +115,7 @@ void runKnockoutStage(qualifiers::Player players[], int count) {
     m.timestamp = local_time::currentTimestamp();
     game_log::logMatch(m);
 
-    enqueue(front, rear, win, qCount);
+    bracket_stage::enqueue(front, rear, win, qCount);
   }
   if (qCount == 1) {
     qualifiers::Player champ = dequeue(front, rear, qCount);

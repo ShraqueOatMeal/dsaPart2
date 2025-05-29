@@ -10,6 +10,11 @@ void printRecentMatches();
 void printAllHistory();
 void printAllPlayerStats();
 
+// Forward declaration for runKnockoutStage
+void runKnockoutStage(qualifiers::Player players[], int count);
+void runGroupStage(qualifiers::Player qualifiers[], int qCount, qualifiers::Player knockouts[], int& kCount);
+//testing
+
 int main() {
   // 1) Load
   qualifiers::Player heap[qualifiers::MAX_PLAYERS];
@@ -23,17 +28,17 @@ int main() {
 
   // 2) Qualifiers
   qualifiers::Player qualifiers[qualifiers::MAX_PLAYERS];
-  int qCount = qualifiers::runQualifiers(heap, total, qualifiers);
+  int qCount = runQualifiers(heap, total, qualifiers);
   std::cout << "\n>>> " << qCount << " advance from Qualifiers.\n";
 
   // 3) Group Stage
   qualifiers::Player knockouts[qualifiers::MAX_PLAYERS];
   int kCount = 0;
-  group_stage::runGroupStage(qualifiers, qCount, knockouts, kCount);
+  runGroupStage(qualifiers, qCount, knockouts, kCount);
   std::cout << "\n>>> " << kCount << " advance from Groups.\n";
 
   // 4) Single-Elimination
-  bracket_stage::runKnockoutStage(knockouts, kCount);
+  runKnockoutStage(knockouts, kCount);
 
   // 5) printing and saving match history
   printRecentMatches();

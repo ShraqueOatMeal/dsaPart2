@@ -16,18 +16,18 @@ group_stage::~group_stage() {
 }
 
 // Helpers for sorting by wins
-static void swapPlayer(qualifiers::Player &a, qualifiers::Player &b) {
+void group_stage::swapPlayer(qualifiers::Player &a, qualifiers::Player &b) {
   qualifiers::Player t = a;
   a = b;
   b = t;
 }
-static void swapInt(int &a, int &b) {
+void group_stage::swapInt(int &a, int &b) {
   int t = a;
   a = b;
   b = t;
 }
 
-static int partitionWins(qualifiers::Player arr[], int wins[], int low, int high) {
+int group_stage::partitionWins(qualifiers::Player arr[], int wins[], int low, int high) {
   int pivot = wins[(low + high) / 2];
   int i = low, j = high;
   while (i <= j) {
@@ -45,7 +45,7 @@ static int partitionWins(qualifiers::Player arr[], int wins[], int low, int high
   return i;
 }
 
-static void quickSortWins(qualifiers::Player arr[], int wins[], int low, int high) {
+void group_stage::quickSortWins(qualifiers::Player arr[], int wins[], int low, int high) {
   if (low < high) {
     int mid = partitionWins(arr, wins, low, high);
     if (low < mid - 1)
@@ -55,7 +55,7 @@ static void quickSortWins(qualifiers::Player arr[], int wins[], int low, int hig
   }
 }
 
-bool winnerByOddsGroup(const qualifiers::Player &p1, const qualifiers::Player &p2) {
+bool group_stage::winnerByOddsGroup(const qualifiers::Player &p1, const qualifiers::Player &p2) {
   int diff = p1.tier - p2.tier;
   if (diff < 0) diff = -diff;
   int shift = std::min(50, 15 * diff);
@@ -67,7 +67,7 @@ bool winnerByOddsGroup(const qualifiers::Player &p1, const qualifiers::Player &p
 
 static int groupMatchCounter = 1;
 
-void runGroupStage(qualifiers::Player qualifiers[], int qCount, qualifiers::Player advancing[],
+void group_stage::runGroupStage(qualifiers::Player qualifiers[], int qCount, qualifiers::Player advancing[],
                    int &advCount) {
   // 1) Bucket qualifiers by tier (1–4)
   static qualifiers::Player buckets[5][qualifiers::MAX_PLAYERS];
@@ -127,7 +127,7 @@ void runGroupStage(qualifiers::Player qualifiers[], int qCount, qualifiers::Play
     for (int j = i + 1; j < sizeB; ++j) {
       std::cout << "[Group B] " << groupB[i].id << " vs " << groupB[j].id;
 
-      bool aWins = winnerByOddsGroup(groupB[i], groupB[j]);
+      bool aWins = group_stage::winnerByOddsGroup(groupB[i], groupB[j]);
       std::string winID = aWins ? groupB[i].id : groupB[j].id;
 
       if (aWins) {
@@ -150,15 +150,15 @@ void runGroupStage(qualifiers::Player qualifiers[], int qCount, qualifiers::Play
   }
 
   // 6) Sort each group by descending wins
-  quickSortWins(groupA, winsA, 0, sizeA - 1);
-  quickSortWins(groupB, winsB, 0, sizeB - 1);
+  group_stage::quickSortWins(groupA, winsA, 0, sizeA - 1);
+  group_stage::quickSortWins(groupB, winsB, 0, sizeB - 1);
 
   // 7) Print out results in Groups Stage
   // show Group A results
-  printGroupResults(groupA, winsA, sizeA, sizeA / 2, "A");
+  group_stage::printGroupResults(groupA, winsA, sizeA, sizeA / 2, "A");
 
   // show Group B results
-  printGroupResults(groupB, winsB, sizeB, sizeB / 2, "B");
+  group_stage::printGroupResults(groupB, winsB, sizeB, sizeB / 2, "B");
 
   // 8) Advance top half from each group
   advCount = 0;
@@ -173,7 +173,7 @@ void runGroupStage(qualifiers::Player qualifiers[], int qCount, qualifiers::Play
   }
 }
 
-void printGroupPlayers(const qualifiers::Player groupA[], int sizeA, const qualifiers::Player groupB[],
+void group_stage::printGroupPlayers(const qualifiers::Player groupA[], int sizeA, const qualifiers::Player groupB[],
                        int sizeB) {
   std::cout << "\n=== Group Stage Players ===\n";
 
@@ -194,7 +194,7 @@ void printGroupPlayers(const qualifiers::Player groupA[], int sizeA, const quali
   std::cout << "============================\n\n";
 }
 
-void printGroupResults(const qualifiers::Player group[], const int wins[], int size,
+void group_stage::printGroupResults(const qualifiers::Player group[], const int wins[], int size,
                        int numAdvance, const char *groupName) {
   std::cout << "\n=== Results: Group " << groupName << " ===\n";
   for (int i = 0; i < size; ++i) {

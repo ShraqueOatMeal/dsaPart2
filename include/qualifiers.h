@@ -1,29 +1,39 @@
 #pragma once
+
 #include <string>
 
+/// The “qualifiers” class encapsulates player data + helper routines
 class qualifiers {
 public:
-  qualifiers();
-  ~qualifiers();
+    /// Maximum number of players we can load
+    static constexpr int MAX_PLAYERS = 128;
 
-  static const int MAX_PLAYERS = 128;
+    /// A single player record
+    struct Player {
+        std::string id;
+        std::string name;
+        bool        isWildcard;
+        int         rank;
+        int         tier;
+    };
 
-  struct Player {
-    std::string id;
-    std::string name;
-    bool isWildcard; // if you want to auto-advance wildcards
-    int rank;
-    int tier; // 1–4, from your CSV’s last column
-  };
+    /// C-tor / D-tor (you can leave these empty or omit if you only ever use statics)
+    qualifiers();
+    ~qualifiers();
 
-  // loadPlayers now knows about id, name, wildcard, rank & tier
-  int static loadPlayers(const char *filename, Player players[]);
+    /// Utility routines
+    static void        swapPlayer(Player &a, Player &b);
+    static void        sortByRank(Player arr[], int n);
+    static bool        winnerByOdds(const Player &p1, const Player &p2);
 
-  // heapify helper you already have
-  static void buildHeap(Player heap[], int n);
-
-  // your odds-based qualifier
-  int static runQualifiers(Player heap[], int heapSize, Player out[]);
-
-  // bool winnerByOdds(const Player &p1, const Player &p2);
+    /// File I/O
+    static int         loadPlayers(const char *filename, Player players[]);
 };
+
+/// Run the bracket of qualifiers:  
+///   players[0..playerCount) ⇒ out[0..]  
+/// returns how many actually advanced
+int runQualifiers(qualifiers::Player players[],
+                  int playerCount,
+                  qualifiers::Player out[]);
+
