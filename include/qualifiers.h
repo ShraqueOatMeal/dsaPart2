@@ -17,13 +17,13 @@ public:
   };
 
   // loadPlayers now knows about id, name, wildcard, rank & tier
-  int loadPlayers(const char *filename, Player players[]);
+  int static loadPlayers(const char *filename, Player players[]);
 
   // heapify helper you already have
-  void buildHeap(Player heap[], int n);
+  static void buildHeap(Player heap[], int n);
 
   // your odds-based qualifier
-  int runQualifiers(Player heap[], int heapSize, Player out[]);
+  int static runQualifiers(Player heap[], int heapSize, Player out[]);
 
   // bool winnerByOdds(const Player &p1, const Player &p2);
 };

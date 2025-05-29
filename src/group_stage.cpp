@@ -16,8 +16,8 @@ group_stage::~group_stage() {
 }
 
 // Helpers for sorting by wins
-static void swapPlayer(Player &a, Player &b) {
-  Player t = a;
+static void swapPlayer(qualifiers::Player &a, qualifiers::Player &b) {
+  qualifiers::Player t = a;
   a = b;
   b = t;
 }
@@ -27,7 +27,7 @@ static void swapInt(int &a, int &b) {
   b = t;
 }
 
-static int partitionWins(Player arr[], int wins[], int low, int high) {
+static int partitionWins(qualifiers::Player arr[], int wins[], int low, int high) {
   int pivot = wins[(low + high) / 2];
   int i = low, j = high;
   while (i <= j) {
@@ -45,7 +45,7 @@ static int partitionWins(Player arr[], int wins[], int low, int high) {
   return i;
 }
 
-static void quickSortWins(Player arr[], int wins[], int low, int high) {
+static void quickSortWins(qualifiers::Player arr[], int wins[], int low, int high) {
   if (low < high) {
     int mid = partitionWins(arr, wins, low, high);
     if (low < mid - 1)
@@ -55,8 +55,9 @@ static void quickSortWins(Player arr[], int wins[], int low, int high) {
   }
 }
 
-bool winnerByOdds(const Player &p1, const Player &p2) {
-  int diff = std::abs(p1.tier - p2.tier);
+bool winnerByOddsGroup(const qualifiers::Player &p1, const qualifiers::Player &p2) {
+  int diff = p1.tier - p2.tier;
+  if (diff < 0) diff = -diff;
   int shift = std::min(50, 15 * diff);
   int p1Chance = 50 + ((p2.tier > p1.tier) ? shift : -shift);
   static std::mt19937 rng{std::random_device{}()};
@@ -66,10 +67,10 @@ bool winnerByOdds(const Player &p1, const Player &p2) {
 
 static int groupMatchCounter = 1;
 
-void runGroupStage(Player qualifiers[], int qCount, Player advancing[],
+void runGroupStage(qualifiers::Player qualifiers[], int qCount, qualifiers::Player advancing[],
                    int &advCount) {
   // 1) Bucket qualifiers by tier (1–4)
-  static Player buckets[5][MAX_PLAYERS];
+  static qualifiers::Player buckets[5][qualifiers::MAX_PLAYERS];
   int tierCount[5] = {0};
   for (int i = 0; i < qCount; ++i) {
     int t = qualifiers[i].tier; // requires Player::tier
@@ -77,7 +78,7 @@ void runGroupStage(Player qualifiers[], int qCount, Player advancing[],
   }
 
   // 2) Evenly distribute each tier into two groups
-  Player groupA[MAX_PLAYERS], groupB[MAX_PLAYERS];
+  qualifiers::Player groupA[qualifiers::MAX_PLAYERS], groupB[qualifiers::MAX_PLAYERS];
   int sizeA = 0, sizeB = 0;
   for (int t = 1; t <= 4; ++t) {
     for (int j = 0; j < tierCount[t]; ++j) {
@@ -90,14 +91,14 @@ void runGroupStage(Player qualifiers[], int qCount, Player advancing[],
   printGroupPlayers(groupA, sizeA, groupB, sizeB);
 
   // 3) Prepare win counters
-  int winsA[MAX_PLAYERS] = {0}, winsB[MAX_PLAYERS] = {0};
+  int winsA[qualifiers::MAX_PLAYERS] = {0}, winsB[qualifiers::MAX_PLAYERS] = {0};
 
   // 4) Round-robin Group A
   for (int i = 0; i < sizeA; ++i) {
     for (int j = i + 1; j < sizeA; ++j) {
       std::cout << "[Group A] " << groupA[i].id << " vs " << groupA[j].id;
 
-      bool aWins = winnerByOdds(groupA[i], groupA[j]);
+      bool aWins = winnerByOddsGroup(groupA[i], groupA[j]);
       std::string winID = aWins ? groupA[i].id : groupA[j].id;
 
       // update win counts & print
@@ -109,15 +110,15 @@ void runGroupStage(Player qualifiers[], int qCount, Player advancing[],
       std::cout << " -> " << winID << "\n";
 
       // now log it
-      MatchResult m;
+      game_log::MatchResult m;
       m.id = "G" + std::to_string(groupMatchCounter++);
       m.p1 = groupA[i].id;
       m.p2 = groupA[j].id;
       m.winner = winID;
       m.score1 = aWins ? 1 : 0;
       m.score2 = aWins ? 0 : 1;
-      m.timestamp = currentTimestamp();
-      logMatch(m);
+      m.timestamp = local_time::currentTimestamp();
+      game_log::logMatch(m);
     }
   }
 
@@ -126,7 +127,7 @@ void runGroupStage(Player qualifiers[], int qCount, Player advancing[],
     for (int j = i + 1; j < sizeB; ++j) {
       std::cout << "[Group B] " << groupB[i].id << " vs " << groupB[j].id;
 
-      bool aWins = winnerByOdds(groupB[i], groupB[j]);
+      bool aWins = winnerByOddsGroup(groupB[i], groupB[j]);
       std::string winID = aWins ? groupB[i].id : groupB[j].id;
 
       if (aWins) {
@@ -136,15 +137,15 @@ void runGroupStage(Player qualifiers[], int qCount, Player advancing[],
       }
       std::cout << " -> " << winID << "\n";
 
-      MatchResult m;
+      game_log::MatchResult m;
       m.id = "G" + std::to_string(groupMatchCounter++);
       m.p1 = groupB[i].id; // ← was mistakenly using groupA
       m.p2 = groupB[j].id;
       m.winner = winID;
       m.score1 = aWins ? 1 : 0;
       m.score2 = aWins ? 0 : 1;
-      m.timestamp = currentTimestamp();
-      logMatch(m);
+      m.timestamp = local_time::currentTimestamp();
+      game_log::logMatch(m);
     }
   }
 
@@ -172,7 +173,7 @@ void runGroupStage(Player qualifiers[], int qCount, Player advancing[],
   }
 }
 
-void printGroupPlayers(const Player groupA[], int sizeA, const Player groupB[],
+void printGroupPlayers(const qualifiers::Player groupA[], int sizeA, const qualifiers::Player groupB[],
                        int sizeB) {
   std::cout << "\n=== Group Stage Players ===\n";
 
@@ -193,7 +194,7 @@ void printGroupPlayers(const Player groupA[], int sizeA, const Player groupB[],
   std::cout << "============================\n\n";
 }
 
-void printGroupResults(const Player group[], const int wins[], int size,
+void printGroupResults(const qualifiers::Player group[], const int wins[], int size,
                        int numAdvance, const char *groupName) {
   std::cout << "\n=== Results: Group " << groupName << " ===\n";
   for (int i = 0; i < size; ++i) {

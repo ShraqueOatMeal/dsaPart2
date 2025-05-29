@@ -9,6 +9,8 @@
 #include <iostream>
 #include <random>
 
+
+
 bracket_stage::bracket_stage() {
   // Constructor implementation
 }
@@ -23,13 +25,14 @@ static void swapPlayer(qualifiers::Player &a, qualifiers::Player &b) {
   a = b;
   b = t;
 }
-static void shufflePlayers(qualifiers::Player arr[], int n) {
-  std::srand(static_cast<unsigned>(std::time(nullptr)));
-  for (int i = n - 1; i > 0; --i) {
-    int j = std::rand() % (i + 1);
-    swapPlayer(arr[i], arr[j]);
-  }
+
+
+static void shufflePlayers( qualifiers::Player arr[], int n )
+{
+    static std::mt19937 rng{ std::random_device{}() };
+    std::shuffle( arr, arr + n, rng );
 }
+
 
 // linked-list queue
 struct Node {
@@ -65,7 +68,8 @@ static qualifiers::Player dequeue(Node *&front, Node *&rear, int &cnt) {
 
 bool winnerByOddsBracket(const qualifiers::Player &p1,
                          const qualifiers::Player &p2) {
-  int diff = std::abs(p1.tier - p2.tier);
+  int diff = p1.tier - p2.tier;
+  if (diff < 0) diff = -diff;
   int shift = std::min(50, 15 * diff);
   int p1Chance = 50 + ((p2.tier > p1.tier) ? shift : -shift);
   static std::mt19937 rng{std::random_device{}()};
