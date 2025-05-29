@@ -1,7 +1,7 @@
-CMakeFiles/dsaPart2_lib.dir/src/bracket_stage.cpp.o: \
- /home/loh-yen-kuan/Coding/dsaPart2/src/bracket_stage.cpp \
+CMakeFiles/dsaPart2_lib.dir/src/group_stage.cpp.o: \
+ /home/loh-yen-kuan/Coding/dsaPart2/src/group_stage.cpp \
  /usr/include/stdc-predef.h \
- /home/loh-yen-kuan/Coding/dsaPart2/include/bracket_stage.h \
+ /home/loh-yen-kuan/Coding/dsaPart2/include/group_stage.h \
  /home/loh-yen-kuan/Coding/dsaPart2/include/qualifiers.h \
  /usr/include/c++/14/string /usr/include/c++/14/bits/requires_hosted.h \
  /usr/include/x86_64-linux-gnu/c++/14/bits/c++config.h \
@@ -127,36 +127,9 @@ CMakeFiles/dsaPart2_lib.dir/src/bracket_stage.cpp.o: \
  /usr/include/c++/14/bits/uniform_int_dist.h \
  /usr/include/c++/14/bits/stl_tempbuf.h \
  /usr/include/c++/14/pstl/glue_algorithm_defs.h \
- /usr/include/c++/14/pstl/execution_defs.h /usr/include/c++/14/cmath \
- /usr/include/math.h /usr/include/x86_64-linux-gnu/bits/math-vector.h \
- /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
- /usr/include/x86_64-linux-gnu/bits/flt-eval-method.h \
- /usr/include/x86_64-linux-gnu/bits/fp-logb.h \
- /usr/include/x86_64-linux-gnu/bits/fp-fast.h \
- /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h \
- /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
- /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h \
- /usr/include/x86_64-linux-gnu/bits/iscanonical.h \
- /usr/include/c++/14/bits/specfun.h /usr/include/c++/14/limits \
- /usr/include/c++/14/tr1/gamma.tcc \
- /usr/include/c++/14/tr1/special_function_util.h \
- /usr/include/c++/14/tr1/bessel_function.tcc \
- /usr/include/c++/14/tr1/beta_function.tcc \
- /usr/include/c++/14/tr1/ell_integral.tcc \
- /usr/include/c++/14/tr1/exp_integral.tcc \
- /usr/include/c++/14/tr1/hypergeometric.tcc \
- /usr/include/c++/14/tr1/legendre_function.tcc \
- /usr/include/c++/14/tr1/modified_bessel_func.tcc \
- /usr/include/c++/14/tr1/poly_hermite.tcc \
- /usr/include/c++/14/tr1/poly_laguerre.tcc \
- /usr/include/c++/14/tr1/riemann_zeta.tcc /usr/include/c++/14/ctime \
- /usr/include/time.h /usr/include/x86_64-linux-gnu/bits/time.h \
- /usr/include/x86_64-linux-gnu/bits/timex.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
- /usr/include/c++/14/iostream /usr/include/c++/14/ostream \
- /usr/include/c++/14/ios /usr/include/c++/14/exception \
- /usr/include/c++/14/bits/exception_ptr.h \
+ /usr/include/c++/14/pstl/execution_defs.h /usr/include/c++/14/iostream \
+ /usr/include/c++/14/ostream /usr/include/c++/14/ios \
+ /usr/include/c++/14/exception /usr/include/c++/14/bits/exception_ptr.h \
  /usr/include/c++/14/bits/cxxabi_init_exception.h \
  /usr/include/c++/14/typeinfo /usr/include/c++/14/bits/nested_exception.h \
  /usr/include/c++/14/bits/ios_base.h /usr/include/c++/14/ext/atomicity.h \
@@ -165,7 +138,11 @@ CMakeFiles/dsaPart2_lib.dir/src/bracket_stage.cpp.o: \
  /usr/include/pthread.h /usr/include/sched.h \
  /usr/include/x86_64-linux-gnu/bits/sched.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h \
- /usr/include/x86_64-linux-gnu/bits/cpu-set.h \
+ /usr/include/x86_64-linux-gnu/bits/cpu-set.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/bits/timex.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
  /usr/include/x86_64-linux-gnu/bits/setjmp.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct___jmp_buf_tag.h \
  /usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h \
@@ -187,7 +164,29 @@ CMakeFiles/dsaPart2_lib.dir/src/bracket_stage.cpp.o: \
  /usr/include/c++/14/bits/basic_ios.tcc \
  /usr/include/c++/14/bits/ostream.tcc /usr/include/c++/14/istream \
  /usr/include/c++/14/bits/istream.tcc /usr/include/c++/14/random \
- /usr/include/c++/14/cstdint \
+ /usr/include/c++/14/cmath /usr/include/math.h \
+ /usr/include/x86_64-linux-gnu/bits/math-vector.h \
+ /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
+ /usr/include/x86_64-linux-gnu/bits/flt-eval-method.h \
+ /usr/include/x86_64-linux-gnu/bits/fp-logb.h \
+ /usr/include/x86_64-linux-gnu/bits/fp-fast.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h \
+ /usr/include/x86_64-linux-gnu/bits/iscanonical.h \
+ /usr/include/c++/14/bits/specfun.h /usr/include/c++/14/limits \
+ /usr/include/c++/14/tr1/gamma.tcc \
+ /usr/include/c++/14/tr1/special_function_util.h \
+ /usr/include/c++/14/tr1/bessel_function.tcc \
+ /usr/include/c++/14/tr1/beta_function.tcc \
+ /usr/include/c++/14/tr1/ell_integral.tcc \
+ /usr/include/c++/14/tr1/exp_integral.tcc \
+ /usr/include/c++/14/tr1/hypergeometric.tcc \
+ /usr/include/c++/14/tr1/legendre_function.tcc \
+ /usr/include/c++/14/tr1/modified_bessel_func.tcc \
+ /usr/include/c++/14/tr1/poly_hermite.tcc \
+ /usr/include/c++/14/tr1/poly_laguerre.tcc \
+ /usr/include/c++/14/tr1/riemann_zeta.tcc /usr/include/c++/14/cstdint \
  /usr/lib/gcc/x86_64-linux-gnu/14/include/stdint.h /usr/include/stdint.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-least.h \

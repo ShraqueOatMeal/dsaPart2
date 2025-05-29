@@ -36,16 +36,16 @@ public:
   };
 
   // API for logging & reporting
-  void initGameLog();
-  void const static logMatch(const MatchResult &m);
+  static void initGameLog();
+  static void logMatch(const MatchResult &m);
 
   // “Quick view” of the last RECENT_SIZE matches
-  void printRecentMatches();
+  static void printRecentMatches();
 
   // Full history traversal
-  void printAllHistory();
-  void printPlayerHistory(const std::string &playerID);
+  static void printAllHistory();
+  static void printPlayerHistory(const std::string &playerID);
 
   // Stats dump
-  void printAllPlayerStats();
+  static void printAllPlayerStats();
 };
