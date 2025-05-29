@@ -179,8 +179,10 @@ void group_stage::runGroupStage(qualifiers::Player qualifiers[], int qCount,
   }
 }
 
-void printGroupPlayers(const qualifiers::Player groupA[], int sizeA,
-                       const qualifiers::Player groupB[], int sizeB) {
+void group_stage::printGroupPlayers(const qualifiers::Player groupA[],
+                                    int sizeA,
+                                    const qualifiers::Player groupB[],
+                                    int sizeB) {
   std::cout << "\n=== Group Stage Players ===\n";
 
   std::cout << "     Group A (" << sizeA << " players)\n";
@@ -200,8 +202,9 @@ void printGroupPlayers(const qualifiers::Player groupA[], int sizeA,
   std::cout << "============================\n\n";
 }
 
-void printGroupResults(const qualifiers::Player group[], const int wins[],
-                       int size, int numAdvance, const char *groupName) {
+void group_stage::printGroupResults(const qualifiers::Player group[],
+                                    const int wins[], int size, int numAdvance,
+                                    const char *groupName) {
   std::cout << "\n=== Results: Group " << groupName << " ===\n";
   for (int i = 0; i < size; ++i) {
     bool advanced = (i < numAdvance);

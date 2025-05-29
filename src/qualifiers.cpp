@@ -37,7 +37,7 @@ static void heapify(qualifiers::Player heap[], int n, int i) {
   }
 }
 
-void buildHeap(qualifiers::Player heap[], int n) {
+void qualifiers::buildHeap(qualifiers::Player heap[], int n) {
   for (int i = n / 2 - 1; i >= 0; --i) {
     heapify(heap, n, i);
   }
@@ -52,7 +52,8 @@ static qualifiers::Player extractMax(qualifiers::Player heap[], int &n) {
   return top;
 }
 
-int loadPlayers(const char *filename, qualifiers::Player players[]) {
+int qualifiers::loadPlayers(const char *filename,
+                            qualifiers::Player players[]) {
   std::ifstream file(filename);
   if (!file.is_open()) {
     std::cerr << "Error opening " << filename << "\n";
