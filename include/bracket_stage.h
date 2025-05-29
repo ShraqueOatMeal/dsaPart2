@@ -6,5 +6,5 @@ public:
   bracket_stage();
   ~bracket_stage();
 
-  void runKnockoutStage(qualifiers::Player players[], int count);
+  static void runKnockoutStage(qualifiers::Player players[], int count);
 };

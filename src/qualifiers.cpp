@@ -7,6 +7,7 @@
 #include <sstream>
 #include <string> // ← for std::string
 
+
 qualifiers::qualifiers() {
   // Constructor implementation
 }
@@ -65,7 +66,7 @@ int loadPlayers(const char *filename, qualifiers::Player players[]) {
   // skip header
   std::getline(file, line);
 
-  while (std::getline(file, line) && count < MAX_PLAYERS) {
+  while (std::getline(file, line) && count < qualifiers::MAX_PLAYERS) {
     std::istringstream ss(line);
 
     // 1) ID
@@ -103,7 +104,8 @@ int loadPlayers(const char *filename, qualifiers::Player players[]) {
 // Returns true if p1 wins
 static bool winnerByOdds(const qualifiers::Player &p1,
                          const qualifiers::Player &p2) {
-  int diff = std::abs(p1.tier - p2.tier);
+  int diff = p1.tier - p2.tier;
+  if (diff < 0) diff = -diff;
   int shift = std::min(50, 15 * diff);
 
   // better tier = lower number
@@ -121,13 +123,13 @@ int runQualifiers(qualifiers::Player heap[], int heapSize,
   buildHeap(heap, heapSize);
 
   // Extract players into temp[] in descending rank order
-  qualifiers::Player temp[MAX_PLAYERS];
+  qualifiers::Player temp[qualifiers::MAX_PLAYERS];
   int n = heapSize;
   for (int i = heapSize - 1; i >= 0; --i)
     temp[i] = extractMax(heap, n);
 
   // 1. Group into 4 tiers using 2D array
-  qualifiers::Player buckets[5][MAX_PLAYERS]; // tiers 1-4, ignore index 0
+  qualifiers::Player buckets[5][qualifiers::MAX_PLAYERS]; // tiers 1-4, ignore index 0
   int bucketSize[5] = {0};                    // count per tier
 
   for (int i = 0; i < heapSize; ++i) {
@@ -155,15 +157,15 @@ int runQualifiers(qualifiers::Player heap[], int heapSize,
       std::cout << "[Tier " << t << "] " << a.id << " vs " << b.id
                 << " -> Winner: " << winner.id << "\n";
 
-      MatchResult m;
+      game_log::MatchResult m;
       m.id = "Q" + std::to_string(matchCounter++);
       m.p1 = a.id;
       m.p2 = b.id;
       m.winner = winner.id;
       m.score1 = 0;
       m.score2 = 0;
-      m.timestamp = currentTimestamp();
-      logMatch(m);
+      m.timestamp = local_time::currentTimestamp();
+      game_log::logMatch(m);
     }
 
     // Handle odd player
