@@ -14,7 +14,7 @@ public:
 
 
     /// prints, logs every match, and announces the champion.
-    void runKnockoutStage(qualifiers::Player players[], int count);
+    void static runKnockoutStage(qualifiers::Player players[], int count);
 
 private:
 
@@ -31,6 +31,6 @@ private:
     /// Swap two players
     static void swapPlayer(qualifiers::Player &a, qualifiers::Player &b);
 
-    static void              enqueue(Node *&front,Node *&rear, const qualifiers::Player &pl,int &cnt);
+    static void enqueue(Node *&front,Node *&rear, const qualifiers::Player &pl,int &cnt);
     static qualifiers::Player dequeue(Node *&front,Node *&rear,int &cnt);
 };

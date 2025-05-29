@@ -159,11 +159,11 @@ void group_stage::runGroupStage(qualifiers::Player qualifiers[], int qCount, qua
   // 7) Print out results in Groups Stage
   // show Group A results
   group_stage::printGroupResults(groupA, winsA, sizeA, sizeA / 2, "A");
-  group_stage::printGroupResults(groupA, winsA, sizeA, sizeA / 2, "A");
+
 
   // show Group B results
   group_stage::printGroupResults(groupB, winsB, sizeB, sizeB / 2, "B");
-  group_stage::printGroupResults(groupB, winsB, sizeB, sizeB / 2, "B");
+
 
   // 8) Advance top half from each group
   advCount = 0;

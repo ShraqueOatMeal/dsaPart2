@@ -13,19 +13,19 @@ public:
                                   const qualifiers::Player &p2);
 
     /// Run the full group stage:
-    void runGroupStage(qualifiers::Player qualifiers[],
+    void static runGroupStage(qualifiers::Player qualifiers[],
                        int qCount,
                        qualifiers::Player advancing[],
                        int &advCount);
 
     /// Print the list of players in Group A and Group B
-    void printGroupPlayers(const qualifiers::Player groupA[],
+    void static printGroupPlayers(const qualifiers::Player groupA[],
                            int sizeA,
                            const qualifiers::Player groupB[],
                            int sizeB);
 
     /// Print the final standings, marking the top `numAdvance` as advanced
-    void printGroupResults(const qualifiers::Player group[],
+    void static printGroupResults(const qualifiers::Player group[],
                            const int wins[],
                            int size,
                            int numAdvance,
