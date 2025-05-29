@@ -4,7 +4,6 @@
 #include "qualifiers.h"
 #include <iostream>
 
-
 // Forward declarations for missing functions
 void printRecentMatches();
 void printAllHistory();
@@ -36,9 +35,9 @@ int main() {
   bracket_stage::runKnockoutStage(knockouts, kCount);
 
   // 5) printing and saving match history
-  printRecentMatches();
-  printAllHistory();
-  printAllPlayerStats();
+  game_log::printRecentMatches();
+  game_log::printAllHistory();
+  game_log::printAllPlayerStats();
 
   return 0;
 }

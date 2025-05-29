@@ -27,13 +27,13 @@ static game_log::PlayerStats *findStats(const std::string &pid) {
   return &stats[statsCount++];
 }
 
-void initGameLog() {
+void game_log::initGameLog() {
   head = rCount = 0;
   historyHead = historyTail = nullptr;
   statsCount = 0;
 }
 
-void logMatch(const game_log::MatchResult &m) {
+void game_log::logMatch(const game_log::MatchResult &m) {
   // 1) recent buffer (overwrite oldest once full)
   recent[head] = m;
   head = (head + 1) % game_log::RECENT_SIZE;
@@ -63,7 +63,7 @@ void logMatch(const game_log::MatchResult &m) {
   }
 }
 
-void printRecentMatches() {
+void game_log::printRecentMatches() {
   std::cout << "\n--- Last " << rCount << " Matches ---\n";
   for (int i = 0; i < rCount; ++i) {
     int idx = (head - 1 - i + game_log::RECENT_SIZE) % game_log::RECENT_SIZE;
@@ -74,7 +74,7 @@ void printRecentMatches() {
   }
 }
 
-void printAllHistory() {
+void game_log::printAllHistory() {
   std::cout << "\n=== Full Match History ===\n";
   for (game_log::HistoryNode *cur = historyHead; cur; cur = cur->next) {
     auto &m = cur->data;
@@ -84,7 +84,7 @@ void printAllHistory() {
   }
 }
 
-void printPlayerHistory(const std::string &pid) {
+void game_log::printPlayerHistory(const std::string &pid) {
   std::cout << "\n=== History for " << pid << " ===\n";
   for (game_log::HistoryNode *cur = historyHead; cur; cur = cur->next) {
     auto &m = cur->data;
@@ -96,7 +96,7 @@ void printPlayerHistory(const std::string &pid) {
   }
 }
 
-void printAllPlayerStats() {
+void game_log::printAllPlayerStats() {
   std::cout << "\n=== Player Performance Stats ===\n";
   for (int i = 0; i < statsCount; ++i) {
     auto &s = stats[i];
