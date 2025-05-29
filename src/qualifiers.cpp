@@ -7,7 +7,6 @@
 #include <sstream>
 #include <string> // ← for std::string
 
-
 qualifiers::qualifiers() {
   // Constructor implementation
 }
@@ -105,7 +104,8 @@ int loadPlayers(const char *filename, qualifiers::Player players[]) {
 static bool winnerByOdds(const qualifiers::Player &p1,
                          const qualifiers::Player &p2) {
   int diff = p1.tier - p2.tier;
-  if (diff < 0) diff = -diff;
+  if (diff < 0)
+    diff = -diff;
   int shift = std::min(50, 15 * diff);
 
   // better tier = lower number
@@ -118,9 +118,9 @@ static bool winnerByOdds(const qualifiers::Player &p1,
 
 static int qualifierMatchCounter = 1;
 
-int runQualifiers(qualifiers::Player heap[], int heapSize,
-                  qualifiers::Player out[]) {
-  buildHeap(heap, heapSize);
+int qualifiers::runQualifiers(qualifiers::Player heap[], int heapSize,
+                              qualifiers::Player out[]) {
+  qualifiers::buildHeap(heap, heapSize);
 
   // Extract players into temp[] in descending rank order
   qualifiers::Player temp[qualifiers::MAX_PLAYERS];
@@ -129,8 +129,9 @@ int runQualifiers(qualifiers::Player heap[], int heapSize,
     temp[i] = extractMax(heap, n);
 
   // 1. Group into 4 tiers using 2D array
-  qualifiers::Player buckets[5][qualifiers::MAX_PLAYERS]; // tiers 1-4, ignore index 0
-  int bucketSize[5] = {0};                    // count per tier
+  qualifiers::Player
+      buckets[5][qualifiers::MAX_PLAYERS]; // tiers 1-4, ignore index 0
+  int bucketSize[5] = {0};                 // count per tier
 
   for (int i = 0; i < heapSize; ++i) {
     int t = temp[i].tier;
