@@ -1,13 +1,12 @@
 #include "qualifiers.h"
 #include "game_log.h"
 #include "local_time.h"
+#include <algorithm> // for std::sort
 #include <fstream>
 #include <iostream>
 #include <random>
 #include <sstream>
 #include <string> // ← for std::string
-#include <algorithm> // for std::sort
-
 
 qualifiers::qualifiers() {
   // Constructor implementation
@@ -24,14 +23,15 @@ void qualifiers::swapPlayer(qualifiers::Player &a, qualifiers::Player &b) {
   b = tmp;
 }
 
-
 void qualifiers::sortByRank(qualifiers::Player arr[], int n) {
-    std::sort(arr, arr + n, [](const qualifiers::Player &a, const qualifiers::Player &b){
-        return a.rank > b.rank;
-    });
+  std::sort(arr, arr + n,
+            [](const qualifiers::Player &a, const qualifiers::Player &b) {
+              return a.rank > b.rank;
+            });
 }
 
-int qualifiers::loadPlayers(const char *filename, qualifiers::Player players[]) {
+int qualifiers::loadPlayers(const char *filename,
+                            qualifiers::Player players[]) {
   std::ifstream file(filename);
   if (!file.is_open()) {
     std::cerr << "Error opening " << filename << "\n";
@@ -81,7 +81,7 @@ int qualifiers::loadPlayers(const char *filename, qualifiers::Player players[]) 
 
 // Returns true if p1 wins
 bool qualifiers::winnerByOdds(const qualifiers::Player &p1,
-                         const qualifiers::Player &p2) {
+                              const qualifiers::Player &p2) {
   int diff = p1.tier - p2.tier;
   if (diff < 0)
     diff = -diff;
@@ -95,58 +95,54 @@ bool qualifiers::winnerByOdds(const qualifiers::Player &p1,
   return dist(rng) <= p1Chance;
 }
 
-//static int qualifierMatchCounter = 1;
+// static int qualifierMatchCounter = 1;
 
-int qualifiers::runQualifiers(qualifiers::Player players[], int playerCount, qualifiers::Player out[]) {
-    // 1) Sort all players by rank
-    qualifiers::sortByRank(players, playerCount);
+int qualifiers::runQualifiers(qualifiers::Player players[], int playerCount,
+                              qualifiers::Player out[]) {
+  // 1) Sort all players by rank
+  qualifiers::sortByRank(players, playerCount);
 
-    // 2) Bucket into tiers
-    static qualifiers::Player buckets[5][qualifiers::MAX_PLAYERS];
-    int bucketSize[5] = {0};
+  // 2) Bucket into tiers
+  static qualifiers::Player buckets[5][qualifiers::MAX_PLAYERS];
+  int bucketSize[5] = {0};
 
-    for (int i = 0; i < playerCount; ++i) {
-        int t = players[i].tier;
-        if (t >= 1 && t <= 4) {
-            buckets[t][ bucketSize[t]++ ] = players[i];
-        }
+  for (int i = 0; i < playerCount; ++i) {
+    int t = players[i].tier;
+    if (t >= 1 && t <= 4) {
+      buckets[t][bucketSize[t]++] = players[i];
+    }
+  }
+
+  int qCount = 0;
+  int matchCounter = 1;
+
+  // 3) Pair them off and decide winners
+  for (int t = 1; t <= 4; ++t) {
+    int idx = bucketSize[t] - 1;
+    while (idx > 0) {
+      qualifiers::Player a = buckets[t][idx--];
+      qualifiers::Player b = buckets[t][idx--];
+
+      qualifiers::Player winner = qualifiers::winnerByOdds(a, b) ? a : b;
+      out[qCount++] = winner;
+
+      std::cout << "[Tier " << t << "] " << a.id << " vs " << b.id
+                << " -> Winner: " << winner.id << "\n";
+
+      // Log it
+      game_log::MatchResult m{
+          "Q" + std::to_string(matchCounter++), a.id, b.id, winner.id, 0, 0,
+          local_time::currentTimestamp()};
+      game_log::logMatch(m);
     }
 
-    int qCount = 0;
-    int matchCounter = 1;
-
-    // 3) Pair them off and decide winners
-    for (int t = 1; t <= 4; ++t) {
-        int idx = bucketSize[t] - 1;
-        while (idx > 0) {
-            qualifiers::Player a = buckets[t][idx--];
-            qualifiers::Player b = buckets[t][idx--];
-
-            qualifiers::Player winner = qualifiers::winnerByOdds(a, b) ? a : b;
-            out[qCount++] = winner;
-
-            std::cout << "[Tier " << t << "] "
-                      << a.id << " vs " << b.id
-                      << " -> Winner: " << winner.id << "\n";
-
-            // Log it
-            game_log::MatchResult m{ "Q" + std::to_string(matchCounter++),
-                           a.id, b.id, winner.id, 0, 0,
-                           local_time::currentTimestamp() 
-                           };
-            game_log::logMatch(m);
-        }
-
-        // advances if odd count
-        if (idx == 0) {
-            out[qCount++] = buckets[t][0];
-            std::cout << "[Tier " << t << "] "
-                      << buckets[t][0].id
-                      << " advances by default\n";
-        }
+    // advances if odd count
+    if (idx == 0) {
+      out[qCount++] = buckets[t][0];
+      std::cout << "[Tier " << t << "] " << buckets[t][0].id
+                << " advances by default\n";
     }
+  }
 
-    return qCount;
+  return qCount;
 }
-
-

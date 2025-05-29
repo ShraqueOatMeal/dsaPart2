@@ -9,8 +9,6 @@
 #include <iostream>
 #include <random>
 
-
-
 bracket_stage::bracket_stage() {
   // Constructor implementation
 }
@@ -26,13 +24,10 @@ void bracket_stage::swapPlayer(qualifiers::Player &a, qualifiers::Player &b) {
   b = t;
 }
 
-
-void bracket_stage::shufflePlayers( qualifiers::Player arr[], int n )
-{
-    static std::mt19937 rng{ std::random_device{}() };
-    std::shuffle( arr, arr + n, rng );
+void bracket_stage::shufflePlayers(qualifiers::Player arr[], int n) {
+  static std::mt19937 rng{std::random_device{}()};
+  std::shuffle(arr, arr + n, rng);
 }
-
 
 // linked-list queue
 struct Node {
@@ -41,8 +36,8 @@ struct Node {
   Node(const qualifiers::Player &pl) : p(pl), next(nullptr) {}
 };
 
-void bracket_stage::enqueue(Node *&front, Node *&rear, const qualifiers::Player &pl,
-                    int &cnt) {
+void bracket_stage::enqueue(Node *&front, Node *&rear,
+                            const qualifiers::Player &pl, int &cnt) {
   Node *n = new Node(pl);
   if (!rear)
     front = rear = n;
@@ -51,7 +46,7 @@ void bracket_stage::enqueue(Node *&front, Node *&rear, const qualifiers::Player 
   ++cnt;
 }
 
-static qualifiers::Player dequeue(Node *&front, Node *&rear, int &cnt) {
+qualifiers::Player bracket_stage::dequeue(Node *&front, Node *&rear, int &cnt) {
   if (!front) {
     std::cerr << "Queue underflow\n";
     return qualifiers::Player{"", "", 0};
@@ -67,9 +62,10 @@ static qualifiers::Player dequeue(Node *&front, Node *&rear, int &cnt) {
 }
 
 bool bracket_stage::winnerByOddsBracket(const qualifiers::Player &p1,
-                         const qualifiers::Player &p2) {
+                                        const qualifiers::Player &p2) {
   int diff = p1.tier - p2.tier;
-  if (diff < 0) diff = -diff;
+  if (diff < 0)
+    diff = -diff;
   int shift = std::min(50, 15 * diff);
   int p1Chance = 50 + ((p2.tier > p1.tier) ? shift : -shift);
   static std::mt19937 rng{std::random_device{}()};
@@ -95,8 +91,8 @@ void bracket_stage::runKnockoutStage(qualifiers::Player players[], int count) {
 
   std::cout << "-- Single-Elimination --\n";
   while (qCount > 1) {
-    qualifiers::Player p1 = dequeue(front, rear, qCount);
-    qualifiers::Player p2 = dequeue(front, rear, qCount);
+    qualifiers::Player p1 = bracket_stage::dequeue(front, rear, qCount);
+    qualifiers::Player p2 = bracket_stage::dequeue(front, rear, qCount);
 
     std::cout << p1.id << " vs " << p2.id << " -> ";
     // use tier‐odds logic instead of direct rank compare
@@ -118,7 +114,7 @@ void bracket_stage::runKnockoutStage(qualifiers::Player players[], int count) {
     bracket_stage::enqueue(front, rear, win, qCount);
   }
   if (qCount == 1) {
-    qualifiers::Player champ = dequeue(front, rear, qCount);
+    qualifiers::Player champ = bracket_stage::dequeue(front, rear, qCount);
     std::cout << "\nChampion: " << "[" << champ.id << "] " << champ.name << " "
               << "[Tier " << champ.tier << "] \n";
   }
