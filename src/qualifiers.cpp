@@ -112,7 +112,8 @@ int qualifiers::loadPlayers(const char *filename, qualifiers::Player players[]) 
 bool qualifiers::winnerByOdds(const qualifiers::Player &p1,
                          const qualifiers::Player &p2) {
   int diff = p1.tier - p2.tier;
-  if (diff < 0) diff = -diff;
+  if (diff < 0)
+    diff = -diff;
   int shift = std::min(50, 15 * diff);
 
   // better tier = lower number

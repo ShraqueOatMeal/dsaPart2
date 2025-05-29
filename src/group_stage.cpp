@@ -57,7 +57,8 @@ void group_stage::quickSortWins(qualifiers::Player arr[], int wins[], int low, i
 
 bool group_stage::winnerByOddsGroup(const qualifiers::Player &p1, const qualifiers::Player &p2) {
   int diff = p1.tier - p2.tier;
-  if (diff < 0) diff = -diff;
+  if (diff < 0)
+    diff = -diff;
   int shift = std::min(50, 15 * diff);
   int p1Chance = 50 + ((p2.tier > p1.tier) ? shift : -shift);
   static std::mt19937 rng{std::random_device{}()};
@@ -78,7 +79,8 @@ void group_stage::runGroupStage(qualifiers::Player qualifiers[], int qCount, qua
   }
 
   // 2) Evenly distribute each tier into two groups
-  qualifiers::Player groupA[qualifiers::MAX_PLAYERS], groupB[qualifiers::MAX_PLAYERS];
+  qualifiers::Player groupA[qualifiers::MAX_PLAYERS],
+      groupB[qualifiers::MAX_PLAYERS];
   int sizeA = 0, sizeB = 0;
   for (int t = 1; t <= 4; ++t) {
     for (int j = 0; j < tierCount[t]; ++j) {
@@ -88,10 +90,11 @@ void group_stage::runGroupStage(qualifiers::Player qualifiers[], int qCount, qua
         groupB[sizeB++] = buckets[t][j];
     }
   }
-  printGroupPlayers(groupA, sizeA, groupB, sizeB);
+  group_stage::printGroupPlayers(groupA, sizeA, groupB, sizeB);
 
   // 3) Prepare win counters
-  int winsA[qualifiers::MAX_PLAYERS] = {0}, winsB[qualifiers::MAX_PLAYERS] = {0};
+  int winsA[qualifiers::MAX_PLAYERS] = {0},
+      winsB[qualifiers::MAX_PLAYERS] = {0};
 
   // 4) Round-robin Group A
   for (int i = 0; i < sizeA; ++i) {
@@ -156,8 +159,10 @@ void group_stage::runGroupStage(qualifiers::Player qualifiers[], int qCount, qua
   // 7) Print out results in Groups Stage
   // show Group A results
   group_stage::printGroupResults(groupA, winsA, sizeA, sizeA / 2, "A");
+  group_stage::printGroupResults(groupA, winsA, sizeA, sizeA / 2, "A");
 
   // show Group B results
+  group_stage::printGroupResults(groupB, winsB, sizeB, sizeB / 2, "B");
   group_stage::printGroupResults(groupB, winsB, sizeB, sizeB / 2, "B");
 
   // 8) Advance top half from each group
