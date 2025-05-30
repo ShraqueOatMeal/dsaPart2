@@ -129,10 +129,13 @@ int qualifiers::runQualifiers(qualifiers::Player players[], int playerCount,
       std::cout << "[Tier " << t << "] " << a.id << " vs " << b.id
                 << " -> Winner: " << winner.id << "\n";
 
+      int score1 = (winner.id == a.id) ? 1 : 0;
+      int score2 = (winner.id == b.id) ? 0 : 1;
+
       // Log it
       game_log::MatchResult m{
-          "Q" + std::to_string(matchCounter++), a.id, b.id, winner.id,
-          local_time::currentTimestamp(),       0,    0,
+          "Q" + std::to_string(matchCounter++), a.id,   b.id,   winner.id,
+          local_time::currentTimestamp(),       score1, score2,
       };
       game_log::logMatch(m);
     }

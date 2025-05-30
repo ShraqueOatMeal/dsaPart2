@@ -120,9 +120,8 @@ void game_log::printPlayerHistoryBST(game_log::HistoryBSTNode *root,
   }
   printPlayerHistoryBST(root->left, pid);
   if (root->data.p1 == pid || root->data.p2 == pid) {
-    std::cout << root->data.id << ": " << root->data.p1 << "("
-              << root->data.score1 << ") vs " << root->data.p2 << "("
-              << root->data.score2 << ") -> " << root->data.winner << " @ "
+    std::cout << root->data.id << ": " << root->data.p1 << " vs "
+              << root->data.p2 << " -> " << root->data.winner << " @ "
               << root->data.timestamp << "\n";
   }
   printPlayerHistoryBST(root->right, pid);

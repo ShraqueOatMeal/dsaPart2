@@ -10,6 +10,7 @@ public:
       10; // how many matches to keep in the “recent” ring
   static const int MAX_STATS =
       128; // max distinct players we’ll track stats for
+  static const int HASH_SIZE = 100;
 
   // A single match’s data
   struct MatchResult {
@@ -36,8 +37,6 @@ public:
     StatsNode *next;
     StatsNode(const std::string &pid) : data{pid, 0, 0, 0}, next(nullptr) {}
   };
-
-  static const int HASH_SIZE = 128;
 
   static unsigned int hash(const std::string &pid);
 
