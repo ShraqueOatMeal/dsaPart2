@@ -131,8 +131,9 @@ int qualifiers::runQualifiers(qualifiers::Player players[], int playerCount,
 
       // Log it
       game_log::MatchResult m{
-          "Q" + std::to_string(matchCounter++), a.id, b.id, winner.id, 0, 0,
-          local_time::currentTimestamp()};
+          "Q" + std::to_string(matchCounter++), a.id, b.id, winner.id,
+          local_time::currentTimestamp(),       0,    0,
+      };
       game_log::logMatch(m);
     }
 

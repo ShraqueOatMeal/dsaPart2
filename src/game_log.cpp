@@ -5,31 +5,61 @@ game_log::game_log() {
   // Constructor implementation
 }
 
-game_log::~game_log() {
-  // Destructor implementation
-}
 // —— globals ——
 static game_log::MatchResult recent[game_log::RECENT_SIZE];
 static int head = 0, rCount = 0;
 
-static game_log::HistoryNode *historyHead = nullptr;
-static game_log::HistoryNode *historyTail = nullptr;
+// static game_log::HistoryNode *historyHead = nullptr;
+// static game_log::HistoryNode *historyTail = nullptr;
+static game_log::HistoryBSTNode *historyRoot = nullptr;
 
-static game_log::PlayerStats stats[game_log::MAX_STATS];
+// static game_log::PlayerStats stats[game_log::MAX_STATS];
+static game_log::StatsNode *hashTable[game_log::HASH_SIZE];
+static int hasSize = 0;
 static int statsCount = 0;
+
+unsigned int game_log::hash(const std::string &pid) {
+  unsigned int hash = 0;
+  for (char c : pid)
+    hash = c + 31 * hash;
+  return hash % game_log::HASH_SIZE;
+}
 
 // find-or-create a PlayerStats entry
 static game_log::PlayerStats *findStats(const std::string &pid) {
-  for (int i = 0; i < statsCount; ++i)
-    if (stats[i].id == pid)
-      return &stats[i];
-  stats[statsCount].id = pid;
-  return &stats[statsCount++];
+  unsigned int hash = game_log::hash(pid);
+  game_log::StatsNode *cur = hashTable[hash];
+  while (cur) {
+    if (cur->data.id == pid)
+      return &cur->data;
+    cur = cur->next;
+  }
+  if (statsCount == game_log::MAX_STATS)
+    return nullptr;
+  game_log::StatsNode *newNode = new game_log::StatsNode(pid);
+  newNode->next = hashTable[hash];
+  hashTable[hash] = newNode;
+  statsCount++;
+  return &newNode->data;
+}
+
+void game_log::insertBST(game_log::HistoryBSTNode *&root,
+                         const game_log::MatchResult &m) {
+  if (!root) {
+    root = new game_log::HistoryBSTNode(m);
+    return;
+  }
+  if (m.id < root->data.id)
+    insertBST(root->left, m);
+  else
+    insertBST(root->right, m);
 }
 
 void game_log::initGameLog() {
   head = rCount = 0;
-  historyHead = historyTail = nullptr;
+  historyRoot = nullptr;
+  for (int i = 0; i < game_log::HASH_SIZE; ++i)
+    hashTable[i] = nullptr;
   statsCount = 0;
 }
 
@@ -40,14 +70,7 @@ void game_log::logMatch(const game_log::MatchResult &m) {
   if (rCount < game_log::RECENT_SIZE)
     ++rCount;
 
-  // 2) append to full history list
-  game_log::HistoryNode *node = new game_log::HistoryNode(m);
-  if (!historyHead)
-    historyHead = historyTail = node;
-  else {
-    historyTail->next = node;
-    historyTail = node;
-  }
+  insertBST(historyRoot, m);
 
   // 3) update per-player stats
   auto *s1 = findStats(m.p1);
@@ -74,33 +97,109 @@ void game_log::printRecentMatches() {
   }
 }
 
+void game_log::printAllHistoryBST(HistoryBSTNode *root) {
+  if (!root)
+    return;
+  printAllHistoryBST(root->left);
+  std::cout << root->data.id << ": " << root->data.p1 << "("
+            << root->data.score1 << ") vs " << root->data.p2 << "("
+            << root->data.score2 << ") -> " << root->data.winner << " @ "
+            << root->data.timestamp << "\n";
+  printAllHistoryBST(root->right);
+}
+
 void game_log::printAllHistory() {
   std::cout << "\n=== Full Match History ===\n";
-  for (game_log::HistoryNode *cur = historyHead; cur; cur = cur->next) {
-    auto &m = cur->data;
-    std::cout << m.id << ": " << m.p1 << "(" << m.score1 << ") vs " << m.p2
-              << "(" << m.score2 << ") -> " << m.winner << " @ " << m.timestamp
-              << "\n";
+  game_log::printAllHistoryBST(historyRoot);
+}
+
+void game_log::printPlayerHistoryBST(game_log::HistoryBSTNode *root,
+                                     const std::string &pid) {
+  if (!root) {
+    return;
   }
+  printPlayerHistoryBST(root->left, pid);
+  if (root->data.p1 == pid || root->data.p2 == pid) {
+    std::cout << root->data.id << ": " << root->data.p1 << "("
+              << root->data.score1 << ") vs " << root->data.p2 << "("
+              << root->data.score2 << ") -> " << root->data.winner << " @ "
+              << root->data.timestamp << "\n";
+  }
+  printPlayerHistoryBST(root->right, pid);
+}
+
+void game_log::printStageHistoryBST(game_log::HistoryBSTNode *root,
+                                    const std::string &stagePrefix) {
+  if (!root)
+    return;
+  game_log::printStageHistoryBST(root->left, stagePrefix);
+  auto &m = root->data;
+  if (m.id.find(stagePrefix) == 0) { // Check if id starts with stagePrefix
+    std::cout << m.id << ": " << m.p1 << " vs " << m.p2 << " -> "
+              << "Winner: " << m.winner << " @ " << m.timestamp << "\n";
+  }
+  game_log::printStageHistoryBST(root->right, stagePrefix);
+}
+
+void game_log::printStageHistory(const std::string &stagePrefix) {
+  std::cout << "\n=== Matches for stage " << stagePrefix << " ===\n";
+  game_log::printStageHistoryBST(historyRoot, stagePrefix);
 }
 
 void game_log::printPlayerHistory(const std::string &pid) {
   std::cout << "\n=== History for " << pid << " ===\n";
-  for (game_log::HistoryNode *cur = historyHead; cur; cur = cur->next) {
-    auto &m = cur->data;
-    if (m.p1 == pid || m.p2 == pid) {
-      std::cout << m.id << ": " << m.p1 << "(" << m.score1 << ") vs " << m.p2
-                << "(" << m.score2 << ") -> " << m.winner << " @ "
-                << m.timestamp << "\n";
-    }
-  }
+  printPlayerHistoryBST(historyRoot, pid);
 }
 
 void game_log::printAllPlayerStats() {
   std::cout << "\n=== Player Performance Stats ===\n";
-  for (int i = 0; i < statsCount; ++i) {
-    auto &s = stats[i];
-    std::cout << s.id << "  Played:" << s.played << "  Won:" << s.won
-              << "  Lost:" << s.lost << "\n";
+  for (int i = 0; i < game_log::MAX_STATS; ++i) {
+    StatsNode *cur = hashTable[i];
+    while (cur) {
+      auto &s = cur->data;
+      std::cout << s.id << "  Played:" << s.played << "  Won:" << s.won
+                << "  Lost:" << s.lost << "\n";
+      cur = cur->next;
+    }
+  }
+}
+
+void game_log::printPlayerStats(const std::string &pid) {
+  std::cout << "\n=== Stats for " << pid << " ===\n";
+  PlayerStats *s = findStats(pid);
+  if (!s && s->played == 0) {
+    std::cout << "No stats found.\n";
+    return;
+  }
+  std::cout << "Played:" << s->played << "  Won:" << s->won
+            << "  Lost:" << s->lost << "\n";
+}
+
+game_log::~game_log() {
+  // Destructor implementation
+  // Free BST
+  HistoryBSTNode *stack[1000]; // Large enough for 71 matches
+  int top = -1;
+  if (historyRoot)
+    stack[++top] = historyRoot;
+  while (top >= 0) {
+    HistoryBSTNode *node = stack[top--];
+    if (node->left)
+      stack[++top] = node->left;
+    if (node->right)
+      stack[++top] = node->right;
+    delete node;
+  }
+  historyRoot = nullptr;
+
+  // Free hash table
+  for (int i = 0; i < HASH_SIZE; ++i) {
+    StatsNode *cur = hashTable[i];
+    while (cur) {
+      StatsNode *next = cur->next;
+      delete cur;
+      cur = next;
+    }
+    hashTable[i] = nullptr;
   }
 }

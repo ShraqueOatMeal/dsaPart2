@@ -13,27 +13,33 @@ public:
 
   // A single match’s data
   struct MatchResult {
-    std::string id;        // e.g. "M001"
-    std::string p1, p2;    // player IDs
-    std::string winner;    // winner’s ID
-    int score1, score2;    // optional
-    std::string timestamp; // e.g. "2025-06-01 14:35"
+    std::string id, p1, p2, winner, timestamp;
+    int score1, score2; // optional
   };
 
   // Node for the unbounded history list
-  struct HistoryNode {
+  struct HistoryBSTNode {
     MatchResult data;
-    HistoryNode *next;
-    HistoryNode(const MatchResult &m) : data(m), next(nullptr) {}
+    HistoryBSTNode *left, *right;
+    HistoryBSTNode(const MatchResult &m)
+        : data(m), left(nullptr), right(nullptr) {}
   };
 
   // Per-player cumulative stats
   struct PlayerStats {
     std::string id;
-    int played = 0;
-    int won = 0;
-    int lost = 0;
+    int played, won, lost;
   };
+
+  struct StatsNode {
+    PlayerStats data;
+    StatsNode *next;
+    StatsNode(const std::string &pid) : data{pid, 0, 0, 0}, next(nullptr) {}
+  };
+
+  static const int HASH_SIZE = 128;
+
+  static unsigned int hash(const std::string &pid);
 
   // API for logging & reporting
   static void initGameLog();
@@ -43,9 +49,19 @@ public:
   static void printRecentMatches();
 
   // Full history traversal
+  static void printAllHistoryBST(HistoryBSTNode *root);
   static void printAllHistory();
+  static void printPlayerHistoryBST(HistoryBSTNode *root,
+                                    const std::string &pid);
   static void printPlayerHistory(const std::string &playerID);
+
+  static void printStageHistoryBST(HistoryBSTNode *root,
+                                   const std::string &stagePrefix);
+  static void printStageHistory(const std::string &stagePrefix);
 
   // Stats dump
   static void printAllPlayerStats();
+  static void printPlayerStats(const std::string &pid);
+
+  static void insertBST(HistoryBSTNode *&root, const MatchResult &m);
 };
