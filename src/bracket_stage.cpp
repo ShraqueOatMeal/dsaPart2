@@ -2,7 +2,7 @@
 #include "game_log.h"
 #include "local_time.h"
 #include "qualifiers.h"
-#include <algorithm>
+#include <algorithm> // WARNING: Cannot use algorithm library
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
@@ -26,7 +26,7 @@ void bracket_stage::swapPlayer(qualifiers::Player &a, qualifiers::Player &b) {
 
 void bracket_stage::shufflePlayers(qualifiers::Player arr[], int n) {
   static std::mt19937 rng{std::random_device{}()};
-  std::shuffle(arr, arr + n, rng);
+  std::shuffle(arr, arr + n, rng); // WARNING: Cannot use std::shuffle
 }
 
 // linked-list queue
