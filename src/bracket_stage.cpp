@@ -100,14 +100,17 @@ void bracket_stage::runKnockoutStage(qualifiers::Player players[], int count) {
     qualifiers::Player win = p1Wins ? p1 : p2;
     std::cout << "Winner: " << win.id << "\n";
 
+    int score1 = p1Wins ? 1 : 0;
+    int score2 = p1Wins ? 0 : 1;
+
     // **NEW**: log this match
     game_log::MatchResult m;
     m.id = "M" + std::to_string(knockoutMatchCounter++);
     m.p1 = p1.id;
     m.p2 = p2.id;
     m.winner = win.id;
-    m.score1 = 0;
-    m.score2 = 0;
+    m.score1 = score1;
+    m.score2 = score2;
     m.timestamp = local_time::currentTimestamp();
     game_log::logMatch(m);
 
