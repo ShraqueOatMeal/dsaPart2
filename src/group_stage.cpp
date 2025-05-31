@@ -1,7 +1,6 @@
 #include "group_stage.h"
 #include "game_log.h"
 #include "local_time.h"
-#include <algorithm>
 #include <cstdlib>
 #include <iostream>
 #include <random>
@@ -27,7 +26,8 @@ void group_stage::swapInt(int &a, int &b) {
   b = t;
 }
 
-int group_stage::partitionWins(qualifiers::Player arr[], int wins[], int low, int high) {
+int group_stage::partitionWins(qualifiers::Player arr[], int wins[], int low,
+                               int high) {
   int pivot = wins[(low + high) / 2];
   int i = low, j = high;
   while (i <= j) {
@@ -45,7 +45,8 @@ int group_stage::partitionWins(qualifiers::Player arr[], int wins[], int low, in
   return i;
 }
 
-void group_stage::quickSortWins(qualifiers::Player arr[], int wins[], int low, int high) {
+void group_stage::quickSortWins(qualifiers::Player arr[], int wins[], int low,
+                                int high) {
   if (low < high) {
     int mid = partitionWins(arr, wins, low, high);
     if (low < mid - 1)
@@ -55,7 +56,8 @@ void group_stage::quickSortWins(qualifiers::Player arr[], int wins[], int low, i
   }
 }
 
-bool group_stage::winnerByOddsGroup(const qualifiers::Player &p1, const qualifiers::Player &p2) {
+bool group_stage::winnerByOddsGroup(const qualifiers::Player &p1,
+                                    const qualifiers::Player &p2) {
   int diff = p1.tier - p2.tier;
   if (diff < 0)
     diff = -diff;
@@ -68,8 +70,8 @@ bool group_stage::winnerByOddsGroup(const qualifiers::Player &p1, const qualifie
 
 static int groupMatchCounter = 1;
 
-void group_stage::runGroupStage(qualifiers::Player qualifiers[], int qCount, qualifiers::Player advancing[],
-                   int &advCount) {
+void group_stage::runGroupStage(qualifiers::Player qualifiers[], int qCount,
+                                qualifiers::Player advancing[], int &advCount) {
   // 1) Bucket qualifiers by tier (1–4)
   static qualifiers::Player buckets[5][qualifiers::MAX_PLAYERS];
   int tierCount[5] = {0};
@@ -160,10 +162,8 @@ void group_stage::runGroupStage(qualifiers::Player qualifiers[], int qCount, qua
   // show Group A results
   group_stage::printGroupResults(groupA, winsA, sizeA, sizeA / 2, "A");
 
-
   // show Group B results
   group_stage::printGroupResults(groupB, winsB, sizeB, sizeB / 2, "B");
-
 
   // 8) Advance top half from each group
   advCount = 0;
@@ -178,8 +178,10 @@ void group_stage::runGroupStage(qualifiers::Player qualifiers[], int qCount, qua
   }
 }
 
-void group_stage::printGroupPlayers(const qualifiers::Player groupA[], int sizeA, const qualifiers::Player groupB[],
-                       int sizeB) {
+void group_stage::printGroupPlayers(const qualifiers::Player groupA[],
+                                    int sizeA,
+                                    const qualifiers::Player groupB[],
+                                    int sizeB) {
   std::cout << "\n=== Group Stage Players ===\n";
 
   std::cout << "     Group A (" << sizeA << " players)\n";
@@ -199,8 +201,9 @@ void group_stage::printGroupPlayers(const qualifiers::Player groupA[], int sizeA
   std::cout << "============================\n\n";
 }
 
-void group_stage::printGroupResults(const qualifiers::Player group[], const int wins[], int size,
-                       int numAdvance, const char *groupName) {
+void group_stage::printGroupResults(const qualifiers::Player group[],
+                                    const int wins[], int size, int numAdvance,
+                                    const char *groupName) {
   std::cout << "\n=== Results: Group " << groupName << " ===\n";
   for (int i = 0; i < size; ++i) {
     bool advanced = (i < numAdvance);
