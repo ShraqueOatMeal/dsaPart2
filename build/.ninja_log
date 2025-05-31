@@ -1,0 +1,9 @@
+# ninja log v6
+16	998	7703202355672972	CMakeFiles/dsaPart2_lib.dir/src/game_log.cpp.obj	5d446842e318d313
+5	1098	7703202355589675	CMakeFiles/dsaPart2_lib.dir/src/bracket_stage.cpp.obj	39fa2e5d62916276
+32	1249	7703202355876960	CMakeFiles/dsaPart2_lib.dir/src/group_stage.cpp.obj	a125dbd66a7b25c6
+2	346	7703827445462384	CMakeFiles/dsaPart2.dir/src/main.cpp.obj	d923143dfa547a94
+65	1422	7703202356207801	CMakeFiles/dsaPart2_lib.dir/src/qualifiers.cpp.obj	43af84b1e0a87a89
+12	571	7703210113233794	CMakeFiles/dsaPart2_lib.dir/src/local_time.cpp.obj	7768d78725a9c243
+572	804	7703210118757960	libdsaPart2_lib.a	a05261167a20ec21
+360	525	7703807867136775	dsaPart2.exe	d493bcb1cdd805e2
