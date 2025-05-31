@@ -4,8 +4,13 @@
 #include "qualifiers.h"
 #include "registration.hpp"
 #include "local_time.h"
+#include "registration.hpp"
+#include "local_time.h"
 #include <iostream>
 #include <limits>
+
+registration ::PlayerQueue playerQueue;
+registration ::PlayerPriorityQueue playerPriorityQueue;
 
 registration ::PlayerQueue playerQueue;
 registration ::PlayerPriorityQueue playerPriorityQueue;
@@ -185,6 +190,7 @@ int main() {
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
+    if (choice == 0) {
     if (choice == 0) {
       std::cout << "Exiting program.\n";
       break;
