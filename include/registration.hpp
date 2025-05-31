@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include <vector>
 #include <iostream>
 using namespace std;
 
@@ -71,6 +70,10 @@ public:
         void pop() { if (!empty()) --size; }
         Player& top() { return data[size - 1]; }
         int getSize() const { return size; }
+        Player& at(int idx) {
+            if (idx < 0 || idx >= size) throw out_of_range("Index out of range");
+            return data[size - 1 - idx];
+        }
     };
 
     registration();
@@ -84,9 +87,6 @@ public:
     static void checkInPlayer(const string &id, Player players[], int count);
 
     // Copy helpers
-    // If you have a qualifiers namespace and Player struct, include its header above.
-    // Otherwise, replace 'qualifiers::Player' with 'Player' or the correct type.
-    static void copyToRegistration(const Player players[], int count, Player out[]);
     static void copyToQualifiers(const Player players[], int count, Player out[]);
 
     // Print the list of registered players
