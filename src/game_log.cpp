@@ -152,7 +152,7 @@ void game_log::printPlayerHistory(const std::string &pid) {
 
 void game_log::printAllPlayerStats() {
   std::cout << "\n=== Player Performance Stats ===\n";
-  for (int i = 0; i < game_log::MAX_STATS; ++i) {
+  for (int i = 0; i < game_log::HASH_SIZE; ++i) {
     StatsNode *cur = hashTable[i];
     while (cur) {
       auto &s = cur->data;
