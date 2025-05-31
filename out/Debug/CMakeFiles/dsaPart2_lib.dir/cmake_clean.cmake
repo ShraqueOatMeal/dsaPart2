@@ -9,6 +9,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/dsaPart2_lib.dir/src/local_time.cpp.o.d"
   "CMakeFiles/dsaPart2_lib.dir/src/qualifiers.cpp.o"
   "CMakeFiles/dsaPart2_lib.dir/src/qualifiers.cpp.o.d"
+  "CMakeFiles/dsaPart2_lib.dir/src/registration.cpp.o"
+  "CMakeFiles/dsaPart2_lib.dir/src/registration.cpp.o.d"
   "libdsaPart2_lib.a"
   "libdsaPart2_lib.pdb"
 )
