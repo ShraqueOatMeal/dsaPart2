@@ -86,9 +86,6 @@ public:
     static void movePlayerToTop(const string &id, Player players[], int count);
     static void checkInPlayer(const string &id, Player players[], int count);
 
-    // Copy helpers
-    static void copyToQualifiers(const Player players[], int count, Player out[]);
-
     // Print the list of registered players
     static void printRegisterList(const Player players[], int count);
 };

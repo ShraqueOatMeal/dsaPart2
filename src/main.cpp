@@ -11,6 +11,12 @@ registration ::PlayerQueue playerQueue;
 registration ::PlayerPriorityQueue playerPriorityQueue;
 
 int main() {
+  // Helper function to sync check-in status for a player ID
+  void syncCheckInStatus(
+      const std::string &pid, registration::Player *registeredPlayer,
+      int totalRegisteredPlayers, registration::PlayerQueue &playerQueue,
+      registration::PlayerPriorityQueue &playerPriorityQueue);
+
   // 1) (Optional) Hard-coded test players
   qualifiers::Player players[] = {
       {"P031", "Marcus Tan", "20/5/2025 9:23", false, false, 10, true, 5, 0, "",
@@ -146,6 +152,217 @@ int main() {
     playerPriorityQueue.push(registeredPlayer[i]);
   }
 
+  while (true){
+    std::cout << "\n=== Registration Menu ===\n";
+    std::cout << "1. Register New Player\n";
+    std::cout << "2. Display Registered Players List\n";
+    std::cout << "3. Withdraw Player\n";
+    std::cout << "4. Check in Player\n";
+    std::cout << "5. Process Check-in Queue Based on Priority\n";
+    std::cout << "6. Copy Checked-in Players to Qualifiers Array\n";
+    std::cout << "0. Exit Registration Menu\n";
+    std::cout << "Enter choice (0-6): ";
+    int regChoice;
+    if (!(std::cin >> regChoice)) {
+      std::cout << "Invalid input. Please enter a number.\n";
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      continue;
+    }
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear
+    // the newline character left in the input buffer
+    if (regChoice == 0) {
+      std::cout << "Exiting Registration Menu.\n";
+      break;
+    }
+    switch (regChoice) {
+      case 1: {
+      registration::Player newPlayer;
+
+      // Find the highest existing player number
+      int maxIdNum = 0;
+      for (int i = 0; i < totalRegisteredPlayers; ++i) {
+        if (registeredPlayer[i].id.length() >= 4 &&
+            registeredPlayer[i].id[0] == 'P') {
+          int num = std::stoi(registeredPlayer[i].id.substr(1));
+          if (num > maxIdNum)
+            maxIdNum = num;
+        }
+      }
+      int nextIdNum = maxIdNum + 1;
+      std::string nextId =
+          "P" + std::string(3 - std::to_string(nextIdNum).length(), '0') +
+          std::to_string(nextIdNum);
+      std::cout << "Adding new player with ID: " << nextId << "\n";
+      newPlayer.id = nextId;
+
+      std::cout << "Enter player name: ";
+      std::getline(std::cin, newPlayer.name);
+      newPlayer.registration_time = local_time::currentTimestamp();
+
+      std::cout << "Is this player a wildcard? (1 for Yes, 0 for No): ";
+      int isWildcard;
+      std::cin >> isWildcard;
+      newPlayer.isWildcard = (isWildcard == 1) ? true : false;
+      std::cin.ignore(
+          std::numeric_limits<std::streamsize>::max(),
+          '\n'); // Clear the newline character from the input buffer
+
+      std::cout << "Is this player an early bird? (1 for Yes, 0 for No): ";
+      int isEarlyBird;
+      std::cin >> isEarlyBird;
+      newPlayer.is_early_bird = (isEarlyBird == 1) ? true : false;
+      std::cin.ignore(
+          std::numeric_limits<std::streamsize>::max(),
+          '\n'); // Clear the newline character from the input buffer
+
+      std::cout << "Enter player rank (default 0): ";
+      int rank;
+      if (!(std::cin >> rank)) {
+        std::cout << "Invalid input. Defaulting rank to 0.\n";
+        rank = 0; // Default rank
+      }
+      std::cin.ignore(
+          std::numeric_limits<std::streamsize>::max(),
+          '\n'); // Clear the newline character from the input buffer
+      newPlayer.rank = rank;
+      
+      newPlayer.check_in_status = false;
+      newPlayer.total_wins = 0;
+      newPlayer.total_lost = 0;
+      newPlayer.result_in_tourney = "";
+
+      int randomTier = (rand() % 4) + 1; // Random tier between 1 and 4
+      newPlayer.tier = randomTier; 
+
+      registration::addPlayer(newPlayer, registeredPlayer,
+                              totalRegisteredPlayers);
+      playerQueue.push(newPlayer);
+      playerPriorityQueue.push(newPlayer);
+
+      std::cout << "New player added \t: " << newPlayer.name << "\n";
+      std::cout << "Player ID \t\t: " << newPlayer.id << "\n";
+      std::cout << "Registration time \t: " << newPlayer.registration_time << "\n";
+      std::cout << "Is Wildcard \t\t: " << (newPlayer.isWildcard ? "Yes" : "No") << "\n";
+      std::cout << "Is Early Bird \t\t: " << (newPlayer.is_early_bird ? "Yes" : "No") << "\n";
+      std::cout << "Rank \t\t\t: " << newPlayer.rank << "\n";
+      std::cout << "Check-in status \t: " << (newPlayer.check_in_status ? "Yes" : "No") << "\n";
+      std::cout << "Tier \t\t\t: " << newPlayer.tier << "\n";
+      std::cout << "Player added successfully!\n";
+      continue;
+    }
+
+    case 2: {
+      std::cout << "Registered Players List:\n";
+      registration::printRegisterList(registeredPlayer, totalRegisteredPlayers);
+      continue;
+    }
+
+    case 3: {
+      std::cout << "Enter player ID to withdraw (e.g., P031): ";
+      std::string pid;
+      std::getline(std::cin, pid);
+      if (pid.length() < 4 || pid[0] != 'P') {
+        std::cout << "Invalid player ID. Use format: PXXX (e.g., P031).\n";
+      } else {
+        registration::withdrawPlayer(pid, registeredPlayer,
+                                     totalRegisteredPlayers);
+        std::cout << "Player with ID " << pid << " has been withdrawn.\n";
+      }
+      continue;
+    }
+
+    case 4: {
+
+      std::cout << "Enter player ID to check in (e.g., P031): ";
+      std::string pid;
+      std::getline(std::cin, pid);
+      if (pid.length() < 4 || pid[0] != 'P') {
+        std::cout << "Invalid player ID. Use format: PXXX (e.g., P031).\n";
+      } else {
+        syncCheckInStatus(pid, registeredPlayer, totalRegisteredPlayers,
+                          playerQueue, playerPriorityQueue);
+        std::cout << "Player with ID " << pid << " has been checked in.\n";
+      }
+      continue;
+    }
+
+    case 5: {
+      std::cout << "Checked-in players sorted by priority:\n";
+      bool found = false;
+      // Print from highest to lowest priority (top is at the end)
+      for (int i = playerPriorityQueue.getSize() - 1; i >= 0; --i) {
+        const registration::Player &p = playerPriorityQueue.at(i);
+        if (p.check_in_status) {
+          std::cout << p.name << " (ID: " << p.id << ")" << 
+                       " - Early Bird: " << (p.is_early_bird ? "Yes" : "No")
+                    << ", Wildcard: " << (p.isWildcard ? "Yes" : "No") << "\n";
+          found = true;
+        }
+      }
+      if (!found) {
+        std::cout << "No players have checked in yet.\n";
+      }
+      continue;
+    }
+
+        case 6: {
+        // Separate checked-in players into qualifiers and direct-to-bracket
+        qualifiers::Player qualifiers[registration::MAX_PLAYERS];
+        int qualifiersCount = 0;
+        qualifiers::Player directBracket[registration::MAX_PLAYERS];
+        int directBracketCount = 0;
+    
+        for (int i = 0; i < totalRegisteredPlayers; ++i) {
+            if (registeredPlayer[i].check_in_status) {
+                if (registeredPlayer[i].is_early_bird || registeredPlayer[i].isWildcard) {
+                    // Priority: straight to bracket
+                    directBracket[directBracketCount++] = qualifiers::Player{
+                        registeredPlayer[i].id,
+                        registeredPlayer[i].name,
+                        registeredPlayer[i].registration_time,
+                        registeredPlayer[i].isWildcard,
+                        registeredPlayer[i].is_early_bird,
+                        registeredPlayer[i].rank,
+                        registeredPlayer[i].check_in_status,
+                        registeredPlayer[i].total_wins,
+                        registeredPlayer[i].total_lost,
+                        registeredPlayer[i].result_in_tourney,
+                        registeredPlayer[i].tier
+                    };
+                } else {
+                    // Must play qualifiers
+                    qualifiers[qualifiersCount++] = qualifiers::Player{
+                        registeredPlayer[i].id,
+                        registeredPlayer[i].name,
+                        registeredPlayer[i].registration_time,
+                        registeredPlayer[i].isWildcard,
+                        registeredPlayer[i].is_early_bird,
+                        registeredPlayer[i].rank,
+                        registeredPlayer[i].check_in_status,
+                        registeredPlayer[i].total_wins,
+                        registeredPlayer[i].total_lost,
+                        registeredPlayer[i].result_in_tourney,
+                        registeredPlayer[i].tier
+                    };
+                }
+            }
+        }
+    
+        std::cout << qualifiersCount << " players go to qualifiers.\n";
+        std::cout << directBracketCount << " players go straight to bracket stage.\n";
+    
+        // Now you can use qualifiers[] for qualifiers stage,
+        // and after qualifiers, merge directBracket[] and qualified[] for bracket stage
+        
+    
+        continue;
+    }
+    default:
+      std::cout << "Invalid choice. Please select 0-6.\n";
+    }
+  }
+
   std::cout << totalPlayers << " players loaded in code.\n";
 
   // 2) Optionally override with CSV load
@@ -160,13 +377,78 @@ int main() {
   log.initGameLog();
 
   // 4) Qualifiers
-  qualifiers::Player qualified[qualifiers::MAX_PLAYERS];
-  int qCount = qualifiers::runQualifiers(players, totalPlayers, qualified);
+  // After registration menu, before tournament stages:
+  qualifiers::Player qualifiers[registration::MAX_PLAYERS];
+  int qualifiersCount = 0;
+  qualifiers::Player directBracket[registration::MAX_PLAYERS];
+  int directBracketCount = 0;
+
+  // Split checked-in players into qualifiers and direct-to-bracket
+  for (int i = 0; i < totalRegisteredPlayers; ++i) {
+      if (registeredPlayer[i].check_in_status) {
+          if (registeredPlayer[i].is_early_bird || registeredPlayer[i].isWildcard) {
+              // Priority: straight to bracket
+              directBracket[directBracketCount++] = qualifiers::Player{
+                  registeredPlayer[i].id,
+                  registeredPlayer[i].name,
+                  registeredPlayer[i].registration_time,
+                  registeredPlayer[i].isWildcard,
+                  registeredPlayer[i].is_early_bird,
+                  registeredPlayer[i].rank,
+                  registeredPlayer[i].check_in_status,
+                  registeredPlayer[i].total_wins,
+                  registeredPlayer[i].total_lost,
+                  registeredPlayer[i].result_in_tourney,
+                  registeredPlayer[i].tier
+              };
+          } else {
+              // Must play qualifiers
+              qualifiers[qualifiersCount++] = qualifiers::Player{
+                  registeredPlayer[i].id,
+                  registeredPlayer[i].name,
+                  registeredPlayer[i].registration_time,
+                  registeredPlayer[i].isWildcard,
+                  registeredPlayer[i].is_early_bird,
+                  registeredPlayer[i].rank,
+                  registeredPlayer[i].check_in_status,
+                  registeredPlayer[i].total_wins,
+                  registeredPlayer[i].total_lost,
+                  registeredPlayer[i].result_in_tourney,
+                  registeredPlayer[i].tier
+              };
+          }
+      }
+  }
+
+  std::cout << qualifiersCount << " players go to qualifiers.\n";
+  std::cout << directBracketCount << " players go straight to bracket stage.\n";
+
+  // 1. Run qualifiers only for non-priority players
+  qualifiers::Player qualified[registration::MAX_PLAYERS];
+  int qCount = qualifiers::runQualifiers(qualifiers, qualifiersCount, qualified);
   std::cout << "\n>>> " << qCount << " advance from Qualifiers.\n";
 
-  // 5) Group Stage
+  // 2. Merge directBracket and qualified for bracket stage
+  qualifiers::Player bracketPlayers[registration::MAX_PLAYERS];
+  int bracketCount = 0;
+  for (int i = 0; i < directBracketCount; ++i)
+      bracketPlayers[bracketCount++] = directBracket[i];
+  for (int i = 0; i < qCount; ++i)
+      bracketPlayers[bracketCount++] = qualified[i];
+
+  // 3. Group Stage
   qualifiers::Player groupAdvance[qualifiers::MAX_PLAYERS];
   int gCount = 0;
+  group_stage::runGroupStage(bracketPlayers, bracketCount, groupAdvance, gCount);
+  std::cout << "\n>>> " << gCount << " advance from Groups.\n";
+
+  // 4. Single-Elimination
+  bracket_stage::runKnockoutStage(groupAdvance, gCount);
+
+  // 5. Print & save history
+  game_log::printRecentMatches();
+  
+  // 5) Group Stage
   group_stage::runGroupStage(qualified, qCount, groupAdvance, gCount);
   std::cout << "\n>>> " << gCount << " advance from Groups.\n";
 
@@ -191,14 +473,8 @@ int main() {
     std::cout << "4. View Player's Match History\n";
     std::cout << "5. View All Player Stats\n";
     std::cout << "6. View Player Stats\n";
-    std::cout << "7. Register New Player\n";
-    std::cout << "8. Display Register list\n";
-    std::cout << "9. Withdraw Player \n";
-    std::cout << "10. Check in Player \n";
-    std::cout << "11. Process check in queue based on the priority \n";
-    std::cout << "12. Copy checked-in players to qualifiers array\n";
     std::cout << "0. Exit\n";
-    std::cout << "Enter choice (0-12): ";
+    std::cout << "Enter choice (0-6): ";
 
     int choice;
     if (!(std::cin >> choice)) {
@@ -257,155 +533,13 @@ int main() {
         game_log::printPlayerStats(pid);
       continue;
     }
-    case 7: {
-      registration::Player newPlayer;
-
-      // Find the highest existing player number
-      int maxIdNum = 0;
-      for (int i = 0; i < totalRegisteredPlayers; ++i) {
-        if (registeredPlayer[i].id.length() >= 4 &&
-            registeredPlayer[i].id[0] == 'P') {
-          int num = std::stoi(registeredPlayer[i].id.substr(1));
-          if (num > maxIdNum)
-            maxIdNum = num;
-        }
-      }
-      int nextIdNum = maxIdNum + 1;
-      std::string nextId =
-          "P" + std::string(3 - std::to_string(nextIdNum).length(), '0') +
-          std::to_string(nextIdNum);
-      std::cout << "Adding new player with ID: " << nextId << "\n";
-      newPlayer.id = nextId;
-
-      std::cout << "Enter player name: ";
-      std::getline(std::cin, newPlayer.name);
-      newPlayer.registration_time = local_time::currentTimestamp();
-
-      std::cout << "Is this player a wildcard? (1 for Yes, 0 for No): ";
-      int isWildcard;
-      std::cin >> isWildcard;
-      newPlayer.isWildcard = (isWildcard == 1) ? true : false;
-      std::cin.ignore(
-          std::numeric_limits<std::streamsize>::max(),
-          '\n'); // Clear the newline character from the input buffer
-
-      std::cout << "Is this player an early bird? (1 for Yes, 0 for No): ";
-      int isEarlyBird;
-      std::cin >> isEarlyBird;
-      newPlayer.is_early_bird = (isEarlyBird == 1) ? true : false;
-      std::cin.ignore(
-          std::numeric_limits<std::streamsize>::max(),
-          '\n'); // Clear the newline character from the input buffer
-
-      newPlayer.rank = 0; // Default rank
-      newPlayer.check_in_status = false;
-      newPlayer.total_wins = 0;
-      newPlayer.total_lost = 0;
-      newPlayer.result_in_tourney = "";
-      newPlayer.tier = 1; // Default tier
-
-      registration::addPlayer(newPlayer, registeredPlayer,
-                              totalRegisteredPlayers);
-      playerQueue.push(newPlayer);
-      playerPriorityQueue.push(newPlayer);
-
-      std::cout << "New player added \t: " << newPlayer.name << "\n";
-      std::cout << "Player ID \t\t: " << newPlayer.id << "\n";
-      continue;
-    }
-
-    case 8: {
-      std::cout << "Registered Players List:\n";
-      registration::printRegisterList(registeredPlayer, totalRegisteredPlayers);
-      continue;
-    }
-
-    case 9: {
-      std::cout << "Enter player ID to withdraw (e.g., P031): ";
-      std::string pid;
-      std::getline(std::cin, pid);
-      if (pid.length() < 4 || pid[0] != 'P') {
-        std::cout << "Invalid player ID. Use format: PXXX (e.g., P031).\n";
-      } else {
-        registration::withdrawPlayer(pid, registeredPlayer,
-                                     totalRegisteredPlayers);
-        std::cout << "Player with ID " << pid << " has been withdrawn.\n";
-      }
-      continue;
-    }
-
-    case 10: {
-
-      std::cout << "Enter player ID to check in (e.g., P031): ";
-      std::string pid;
-      std::getline(std::cin, pid);
-      if (pid.length() < 4 || pid[0] != 'P') {
-        std::cout << "Invalid player ID. Use format: PXXX (e.g., P031).\n";
-      } else {
-        syncCheckInStatus(pid, registeredPlayer, totalRegisteredPlayers,
-                          playerQueue, playerPriorityQueue);
-        std::cout << "Player with ID " << pid << " has been checked in.\n";
-      }
-      continue;
-    }
-
-    case 11: {
-      std::cout << "Checked-in players sorted by priority:\n";
-      bool found = false;
-      // Print from highest to lowest priority (top is at the end)
-      for (int i = playerPriorityQueue.getSize() - 1; i >= 0; --i) {
-        const registration::Player &p = playerPriorityQueue.at(i);
-        if (p.check_in_status) {
-          std::cout << p.name << " (ID: " << p.id << ")\n";
-          found = true;
-        }
-      }
-      if (!found) {
-        std::cout << "No players have checked in yet.\n";
-      }
-      continue;
-    }
-
-    case 12: {
-      // Copy all checked-in players to a new qualifiers array
-      qualifiers::Player checkedInPlayers[registration::MAX_PLAYERS];
-      int checkedInCount = 0;
-      for (int i = 0; i < totalRegisteredPlayers; ++i) {
-        if (registeredPlayer[i].check_in_status) {
-          // Copy fields from registration::Player to qualifiers::Player
-          checkedInPlayers[checkedInCount].id = registeredPlayer[i].id;
-          checkedInPlayers[checkedInCount].name = registeredPlayer[i].name;
-          checkedInPlayers[checkedInCount].registration_time =
-              registeredPlayer[i].registration_time;
-          checkedInPlayers[checkedInCount].isWildcard =
-              registeredPlayer[i].isWildcard;
-          checkedInPlayers[checkedInCount].is_early_bird =
-              registeredPlayer[i].is_early_bird;
-          checkedInPlayers[checkedInCount].rank = registeredPlayer[i].rank;
-          checkedInPlayers[checkedInCount].check_in_status =
-              registeredPlayer[i].check_in_status;
-          checkedInPlayers[checkedInCount].total_wins =
-              registeredPlayer[i].total_wins;
-          checkedInPlayers[checkedInCount].total_lost =
-              registeredPlayer[i].total_lost;
-          checkedInPlayers[checkedInCount].result_in_tourney =
-              registeredPlayer[i].result_in_tourney;
-          checkedInPlayers[checkedInCount].tier = registeredPlayer[i].tier;
-          checkedInCount++;
-        }
-      }
-      std::cout << checkedInCount
-                << " checked-in players copied to qualifiers.\n";
-      // Now you can use checkedInPlayers and checkedInCount for your
-      // qualifiers stage
-      continue;
-    }
-
     default:
-      std::cout << "Invalid choice. Please select 0-12.\n";
+      std::cout << "Invalid choice. Please select 0-6.\n";
     }
     return 0;
   }
+
+  
 }
 
 // Helper function to sync check-in status for a player ID
