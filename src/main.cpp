@@ -2,8 +2,13 @@
 #include "game_log.h"
 #include "group_stage.h"
 #include "qualifiers.h"
+#include "registration.hpp"
+#include "local_time.h"
 #include <iostream>
 #include <limits>
+
+registration ::PlayerQueue playerQueue;
+registration ::PlayerPriorityQueue playerPriorityQueue;
 
 int main() {
   // 1) (Optional) Hard-coded test players
@@ -110,8 +115,14 @@ int main() {
     std::cout << "4. View Player's Match History\n";
     std::cout << "5. View All Player Stats\n";
     std::cout << "6. View Player Stats\n";
-    std::cout << "7. Exit\n";
-    std::cout << "Enter choice (1-7): ";
+    std::cout << "7. Display Player Queue\n";
+    std::cout << "8. Display Register list\n";
+    std::cout << "9. Add new person \n";
+    std::cout << "10. Withdraw person \n";
+    std::cout << "11. Check in person \n";
+    std::cout << "12. Process check in queue based on the priority \n";
+    std::cout << "0. Exit\n";
+    std::cout << "Enter choice (0-12): ";
 
     int choice;
     if (!(std::cin >> choice)) {
@@ -123,7 +134,7 @@ int main() {
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    if (choice == 7) {
+    if (choice == 0) {
       std::cout << "Exiting program.\n";
       break;
     }
@@ -172,6 +183,55 @@ int main() {
         game_log::printPlayerStats(pid);
       continue;
     }
+    case 7: {
+      registration::Player newPlayer;
+      int nextIdNum = totalPlayers + 1;
+      std::string nextId = "P" + std::string(3 - std::to_string(nextIdNum).length(), '0') + std::to_string(nextIdNum);
+      std::cout << "Adding new player with ID: " << nextId << "\n";
+      newPlayer.id = nextId;
+
+      std::cout << "Enter player name: ";
+      std::getline(std::cin, newPlayer.name);
+      newPlayer.registration_time = local_time::currentTimestamp();
+
+      std::cout << "Is this player a wildcard? (1 for Yes, 0 for No): ";
+      int isWildcard;
+      std::cin >> isWildcard;
+      newPlayer.isWildcard = (isWildcard == 1) ? true : false;
+
+      std::cout << "Is this player an early bird? (1 for Yes, 0 for No): ";
+      int isEarlyBird;
+      std::cin >> isEarlyBird;
+      newPlayer.is_early_bird = (isEarlyBird == 1) ? true : false;
+      
+
+      newPlayer.rank = 0; // Default rank
+      newPlayer.check_in_status = false;
+      newPlayer.total_wins = 0;
+      newPlayer.total_lost = 0;
+      newPlayer.result_in_tourney = "";
+      newPlayer.tier = 1; // Default tier
+
+      playerQueue.push(newPlayer);
+      std::cout << "New player added \t: " << newPlayer.name << "\n";
+      std::cout << "Player ID \t\t: " << newPlayer.id << "\n";
+      totalPlayers++;
+      
+      continue;
+    }
+
+    case 8: {
+      // Print the registered player list using the player array and count
+      registration::Player players[registration::MAX_PLAYERS];
+      int count = playerQueue.getSize();
+      for (int i = 0; i < count; ++i) {
+          players[i] = playerQueue.at(i);
+      }
+      registration::printRegisterList(players, count);
+      continue;
+    }
+
+
     default:
       std::cout << "Invalid choice. Please select 1-7.\n";
     }
