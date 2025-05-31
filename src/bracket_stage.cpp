@@ -2,7 +2,6 @@
 #include "game_log.h"
 #include "local_time.h"
 #include "qualifiers.h"
-#include <algorithm>
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
@@ -26,7 +25,16 @@ void bracket_stage::swapPlayer(qualifiers::Player &a, qualifiers::Player &b) {
 
 void bracket_stage::shufflePlayers(qualifiers::Player arr[], int n) {
   static std::mt19937 rng{std::random_device{}()};
-  std::shuffle(arr, arr + n, rng);
+
+  for (int i = n - 1; i > 0; --i) {
+    std::uniform_int_distribution<int> dist(0, i);
+    int j = dist(rng);
+
+    // swap arr[i] and arr[j]
+    qualifiers::Player tmp    = arr[i];
+    arr[i]                    = arr[j];
+    arr[j]                    = tmp;
+  }
 }
 
 // linked-list queue

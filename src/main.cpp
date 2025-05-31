@@ -6,7 +6,7 @@
 #include <limits>
 
 int main() {
-  // 1) (Optional) Hard-coded test players
+
   qualifiers::Player players[] = {
       {"P031", "Marcus Tan", "20/5/2025 9:23", false, false, 10, true, 5, 0, "",
        1},
@@ -73,33 +73,26 @@ int main() {
 
   std::cout << totalPlayers << " players loaded in code.\n";
 
-  // 2) Optionally override with CSV load
-  // totalPlayers = qualifiers::loadPlayers("tourneydata.csv", players);
   if (totalPlayers < 2) {
     std::cout << "Not enough players.\n";
     return 1;
   }
 
-  // 3) Initialize the log
   game_log log;
   log.initGameLog();
 
-  // 4) Qualifiers
   qualifiers::Player qualified[qualifiers::MAX_PLAYERS];
   int qCount = qualifiers::runQualifiers(players, totalPlayers, qualified);
   std::cout << "\n>>> " << qCount << " advance from Qualifiers.\n";
 
-  // 5) Group Stage
   qualifiers::Player groupAdvance[qualifiers::MAX_PLAYERS];
   int gCount = 0;
   group_stage::runGroupStage(qualified, qCount, groupAdvance, gCount);
   std::cout << "\n>>> " << gCount << " advance from Groups.\n";
 
-  // 6) Single-Elimination
   bracket_stage::runKnockoutStage(groupAdvance, gCount);
 
-  // 7) Print & save history
-  // If these are static methods:
+  // Print & save history
   game_log::printRecentMatches();
 
   while (true) {

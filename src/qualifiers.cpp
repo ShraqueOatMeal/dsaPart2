@@ -1,12 +1,11 @@
 #include "qualifiers.h"
 #include "game_log.h"
 #include "local_time.h"
-#include <algorithm> // for std::sort
 #include <fstream>
 #include <iostream>
 #include <random>
 #include <sstream>
-#include <string> // ← for std::string
+#include <string>
 
 qualifiers::qualifiers() {
   // Constructor implementation
@@ -24,10 +23,19 @@ void qualifiers::swapPlayer(qualifiers::Player &a, qualifiers::Player &b) {
 }
 
 void qualifiers::sortByRank(qualifiers::Player arr[], int n) {
-  std::sort(arr, arr + n,
-            [](const qualifiers::Player &a, const qualifiers::Player &b) {
-              return a.rank > b.rank;
-            });
+  for (int i = 0; i < n - 1; ++i) {
+    // Find index of the maximum‐rank element in arr[i..n-1]
+    int maxIdx = i;
+    for (int j = i + 1; j < n; ++j) {
+      if (arr[j].rank > arr[maxIdx].rank) {
+        maxIdx = j;
+      }
+    }
+    // Swap arr[i] with arr[maxIdx]
+    if (maxIdx != i) {
+      swapPlayer(arr[i], arr[maxIdx]);
+    }
+  }
 }
 
 int qualifiers::loadPlayers(const char *filename,
@@ -47,29 +55,21 @@ int qualifiers::loadPlayers(const char *filename,
   while (std::getline(file, line) && count < qualifiers::MAX_PLAYERS) {
     std::istringstream ss(line);
 
-    // 1) ID
     std::getline(ss, players[count].id, ',');
 
-    // 2) Name
     std::getline(ss, players[count].name, ',');
 
-    // 3) registration_time (skip)
     std::getline(ss, token, ',');
 
-    // 4) is_wildcard
     std::getline(ss, token, ',');
     players[count].isWildcard = (token == "Yes");
 
-    // 5) ranking
     std::getline(ss, token, ',');
     players[count].rank = std::stoi(token);
 
-    // 6) check_in_status, total_wins, total_lost, result_in_tourney (skip 4
-    // cols)
     for (int i = 0; i < 4; ++i)
       std::getline(ss, token, ',');
 
-    // 7) tier_rating
     std::getline(ss, token, ',');
     players[count].tier = std::stoi(token);
 
@@ -95,14 +95,12 @@ bool qualifiers::winnerByOdds(const qualifiers::Player &p1,
   return dist(rng) <= p1Chance;
 }
 
-// static int qualifierMatchCounter = 1;
-
 int qualifiers::runQualifiers(qualifiers::Player players[], int playerCount,
                               qualifiers::Player out[]) {
-  // 1) Sort all players by rank
+  // Sort all players by rank
   qualifiers::sortByRank(players, playerCount);
 
-  // 2) Bucket into tiers
+  // Bucket into tiers
   static qualifiers::Player buckets[5][qualifiers::MAX_PLAYERS];
   int bucketSize[5] = {0};
 
@@ -116,7 +114,7 @@ int qualifiers::runQualifiers(qualifiers::Player players[], int playerCount,
   int qCount = 0;
   int matchCounter = 1;
 
-  // 3) Pair them off and decide winners
+  // Pair them off and decide winners
   for (int t = 1; t <= 4; ++t) {
     int idx = bucketSize[t] - 1;
     while (idx > 0) {
