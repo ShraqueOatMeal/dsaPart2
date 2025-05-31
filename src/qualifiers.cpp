@@ -1,7 +1,6 @@
 #include "qualifiers.h"
 #include "game_log.h"
 #include "local_time.h"
-#include <algorithm> // WARNING: Cannot use std::sort
 #include <fstream>
 #include <iostream>
 #include <random>
@@ -24,12 +23,19 @@ void qualifiers::swapPlayer(qualifiers::Player &a, qualifiers::Player &b) {
 }
 
 void qualifiers::sortByRank(qualifiers::Player arr[], int n) {
-
-  // :WARNING: Cannot use std::sort
-  std::sort(arr, arr + n,
-            [](const qualifiers::Player &a, const qualifiers::Player &b) {
-              return a.rank > b.rank;
-            });
+  for (int i = 0; i < n - 1; ++i) {
+    // Find index of the maximum‐rank element in arr[i..n-1]
+    int maxIdx = i;
+    for (int j = i + 1; j < n; ++j) {
+      if (arr[j].rank > arr[maxIdx].rank) {
+        maxIdx = j;
+      }
+    }
+    // Swap arr[i] with arr[maxIdx]
+    if (maxIdx != i) {
+      swapPlayer(arr[i], arr[maxIdx]);
+    }
+  }
 }
 
 int qualifiers::loadPlayers(const char *filename,
