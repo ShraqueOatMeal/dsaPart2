@@ -286,6 +286,30 @@ src/qualifiers.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/dsaPart2_lib.dir/build.make CMakeFiles/dsaPart2_lib.dir/src/qualifiers.cpp.s
 .PHONY : src/qualifiers.cpp.s
 
+src/registration.o: src/registration.cpp.o
+.PHONY : src/registration.o
+
+# target to build an object file
+src/registration.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dsaPart2_lib.dir/build.make CMakeFiles/dsaPart2_lib.dir/src/registration.cpp.o
+.PHONY : src/registration.cpp.o
+
+src/registration.i: src/registration.cpp.i
+.PHONY : src/registration.i
+
+# target to preprocess a source file
+src/registration.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dsaPart2_lib.dir/build.make CMakeFiles/dsaPart2_lib.dir/src/registration.cpp.i
+.PHONY : src/registration.cpp.i
+
+src/registration.s: src/registration.cpp.s
+.PHONY : src/registration.s
+
+# target to generate assembly for a file
+src/registration.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dsaPart2_lib.dir/build.make CMakeFiles/dsaPart2_lib.dir/src/registration.cpp.s
+.PHONY : src/registration.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -314,6 +338,9 @@ help:
 	@echo "... src/qualifiers.o"
 	@echo "... src/qualifiers.i"
 	@echo "... src/qualifiers.s"
+	@echo "... src/registration.o"
+	@echo "... src/registration.i"
+	@echo "... src/registration.s"
 .PHONY : help
 
 

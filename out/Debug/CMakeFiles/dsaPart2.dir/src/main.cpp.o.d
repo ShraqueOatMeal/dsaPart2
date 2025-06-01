@@ -121,6 +121,8 @@ CMakeFiles/dsaPart2.dir/src/main.cpp.o: \
  /usr/include/c++/14/bits/uses_allocator_args.h /usr/include/c++/14/tuple \
  /home/loh-yen-kuan/Coding/dsaPart2/include/game_log.h \
  /home/loh-yen-kuan/Coding/dsaPart2/include/group_stage.h \
+ /home/loh-yen-kuan/Coding/dsaPart2/include/local_time.h \
+ /home/loh-yen-kuan/Coding/dsaPart2/include/registration.hpp \
  /usr/include/c++/14/iostream /usr/include/c++/14/ostream \
  /usr/include/c++/14/ios /usr/include/c++/14/exception \
  /usr/include/c++/14/bits/exception_ptr.h \

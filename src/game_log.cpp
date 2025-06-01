@@ -9,11 +9,8 @@ game_log::game_log() {
 static game_log::MatchResult recent[game_log::RECENT_SIZE];
 static int head = 0, rCount = 0;
 
-// static game_log::HistoryNode *historyHead = nullptr;
-// static game_log::HistoryNode *historyTail = nullptr;
 static game_log::HistoryBSTNode *historyRoot = nullptr;
 
-// static game_log::PlayerStats stats[game_log::MAX_STATS];
 static game_log::StatsNode *hashTable[game_log::HASH_SIZE];
 static int hasSize = 0;
 static int statsCount = 0;
@@ -64,7 +61,7 @@ void game_log::initGameLog() {
 }
 
 void game_log::logMatch(const game_log::MatchResult &m) {
-  // 1) recent buffer (overwrite oldest once full)
+  // Recent buffer (overwrite oldest when full)
   recent[head] = m;
   head = (head + 1) % game_log::RECENT_SIZE;
   if (rCount < game_log::RECENT_SIZE)
@@ -72,7 +69,7 @@ void game_log::logMatch(const game_log::MatchResult &m) {
 
   insertBST(historyRoot, m);
 
-  // 3) update per-player stats
+  // update player stats
   auto *s1 = findStats(m.p1);
   auto *s2 = findStats(m.p2);
   s1->played++;

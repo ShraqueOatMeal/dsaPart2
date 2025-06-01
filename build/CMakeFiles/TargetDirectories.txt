@@ -1,0 +1,4 @@
+C:/Users/Albert Leonardus/OneDrive/Dokumen/GitHub/dsaPart2/build/CMakeFiles/dsaPart2.dir
+C:/Users/Albert Leonardus/OneDrive/Dokumen/GitHub/dsaPart2/build/CMakeFiles/dsaPart2_lib.dir
+C:/Users/Albert Leonardus/OneDrive/Dokumen/GitHub/dsaPart2/build/CMakeFiles/edit_cache.dir
+C:/Users/Albert Leonardus/OneDrive/Dokumen/GitHub/dsaPart2/build/CMakeFiles/rebuild_cache.dir
