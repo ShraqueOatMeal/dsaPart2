@@ -45,7 +45,21 @@ void game_log::insertBST(game_log::HistoryBSTNode *&root,
     root = new game_log::HistoryBSTNode(m);
     return;
   }
-  if (m.id < root->data.id)
+
+  int m_num, root_num;
+
+  try {
+    m_num = stoi(m.id.substr(1));
+    root_num = stoi(root->data.id.substr(1));
+  } catch (...) {
+    if (m.id < root->data.id)
+      insertBST(root->left, m);
+    else
+      insertBST(root->right, m);
+    return;
+  }
+
+  if (m_num < root_num)
     insertBST(root->left, m);
   else
     insertBST(root->right, m);
