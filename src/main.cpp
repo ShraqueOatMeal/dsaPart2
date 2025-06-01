@@ -12,7 +12,7 @@ registration ::PlayerQueue playerQueue;
 registration ::PlayerPriorityQueue playerPriorityQueue;
 
 int main() {
-  // Helper function to sync check-in status for a player ID
+  // Function to sync check-in status for a player ID
   void syncCheckInStatus(
       const string &pid, registration::Player *registeredPlayer,
       int totalRegisteredPlayers, registration::PlayerQueue &playerQueue,
@@ -316,7 +316,7 @@ int main() {
         if (registeredPlayer[i].check_in_status) {
           if (registeredPlayer[i].is_early_bird ||
               registeredPlayer[i].isWildcard) {
-            // Priority: straight to bracket
+            // Priority to bracket
             directBracket[directBracketCount++] =
                 qualifiers::Player{registeredPlayer[i].id,
                                    registeredPlayer[i].name,
@@ -330,7 +330,7 @@ int main() {
                                    registeredPlayer[i].result_in_tourney,
                                    registeredPlayer[i].tier};
           } else {
-            // Must play qualifiers
+            // Qualifiers Player
             qualifiers[qualifiersCount++] =
                 qualifiers::Player{registeredPlayer[i].id,
                                    registeredPlayer[i].name,
@@ -350,10 +350,6 @@ int main() {
       cout << qualifiersCount << " players go to qualifiers.\n";
       cout << directBracketCount << " players go straight to bracket stage.\n";
 
-      // Now you can use qualifiers[] for qualifiers stage,
-      // and after qualifiers, merge directBracket[] and qualified[] for bracket
-      // stage
-
       continue;
     }
     default:
@@ -371,7 +367,7 @@ int main() {
   game_log log;
   log.initGameLog();
 
-  // 4) Qualifiers
+  // Qualifiers
   // After registration menu, before tournament stages:
   qualifiers::Player qualifiers[registration::MAX_PLAYERS];
   int qualifiersCount = 0;
@@ -438,15 +434,6 @@ int main() {
   cout << "\n>>> " << gCount << " advance from Groups.\n";
 
   // Single-Elimination
-  bracket_stage::runKnockoutStage(groupAdvance, gCount);
-
-  // Print & save history
-  game_log::printRecentMatches();
-
-  // Group Stage
-  group_stage::runGroupStage(qualified, qCount, groupAdvance, gCount);
-  cout << "\n>>> " << gCount << " advance from Groups.\n";
-
   bracket_stage::runKnockoutStage(groupAdvance, gCount);
 
   // Print & save history
