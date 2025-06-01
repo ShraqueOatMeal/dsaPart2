@@ -1,0 +1,44 @@
+[
+{
+  "directory": "C:/Users/Albert Leonardus/OneDrive/Dokumen/GitHub/dsaPart2/build",
+  "command": "C:\\MinGW\\bin\\g++.exe -I\"C:/Users/Albert Leonardus/OneDrive/Dokumen/GitHub/dsaPart2/include\" -g -std=gnu++1z -o CMakeFiles\\dsaPart2.dir\\src\\main.cpp.obj -c \"C:\\Users\\Albert Leonardus\\OneDrive\\Dokumen\\GitHub\\dsaPart2\\src\\main.cpp\"",
+  "file": "C:\\Users\\Albert Leonardus\\OneDrive\\Dokumen\\GitHub\\dsaPart2\\src\\main.cpp",
+  "output": "CMakeFiles\\dsaPart2.dir\\src\\main.cpp.obj"
+},
+{
+  "directory": "C:/Users/Albert Leonardus/OneDrive/Dokumen/GitHub/dsaPart2/build",
+  "command": "C:\\MinGW\\bin\\g++.exe -I\"C:/Users/Albert Leonardus/OneDrive/Dokumen/GitHub/dsaPart2/include\" -g -std=gnu++1z -o CMakeFiles\\dsaPart2_lib.dir\\src\\bracket_stage.cpp.obj -c \"C:\\Users\\Albert Leonardus\\OneDrive\\Dokumen\\GitHub\\dsaPart2\\src\\bracket_stage.cpp\"",
+  "file": "C:\\Users\\Albert Leonardus\\OneDrive\\Dokumen\\GitHub\\dsaPart2\\src\\bracket_stage.cpp",
+  "output": "CMakeFiles\\dsaPart2_lib.dir\\src\\bracket_stage.cpp.obj"
+},
+{
+  "directory": "C:/Users/Albert Leonardus/OneDrive/Dokumen/GitHub/dsaPart2/build",
+  "command": "C:\\MinGW\\bin\\g++.exe -I\"C:/Users/Albert Leonardus/OneDrive/Dokumen/GitHub/dsaPart2/include\" -g -std=gnu++1z -o CMakeFiles\\dsaPart2_lib.dir\\src\\game_log.cpp.obj -c \"C:\\Users\\Albert Leonardus\\OneDrive\\Dokumen\\GitHub\\dsaPart2\\src\\game_log.cpp\"",
+  "file": "C:\\Users\\Albert Leonardus\\OneDrive\\Dokumen\\GitHub\\dsaPart2\\src\\game_log.cpp",
+  "output": "CMakeFiles\\dsaPart2_lib.dir\\src\\game_log.cpp.obj"
+},
+{
+  "directory": "C:/Users/Albert Leonardus/OneDrive/Dokumen/GitHub/dsaPart2/build",
+  "command": "C:\\MinGW\\bin\\g++.exe -I\"C:/Users/Albert Leonardus/OneDrive/Dokumen/GitHub/dsaPart2/include\" -g -std=gnu++1z -o CMakeFiles\\dsaPart2_lib.dir\\src\\group_stage.cpp.obj -c \"C:\\Users\\Albert Leonardus\\OneDrive\\Dokumen\\GitHub\\dsaPart2\\src\\group_stage.cpp\"",
+  "file": "C:\\Users\\Albert Leonardus\\OneDrive\\Dokumen\\GitHub\\dsaPart2\\src\\group_stage.cpp",
+  "output": "CMakeFiles\\dsaPart2_lib.dir\\src\\group_stage.cpp.obj"
+},
+{
+  "directory": "C:/Users/Albert Leonardus/OneDrive/Dokumen/GitHub/dsaPart2/build",
+  "command": "C:\\MinGW\\bin\\g++.exe -I\"C:/Users/Albert Leonardus/OneDrive/Dokumen/GitHub/dsaPart2/include\" -g -std=gnu++1z -o CMakeFiles\\dsaPart2_lib.dir\\src\\local_time.cpp.obj -c \"C:\\Users\\Albert Leonardus\\OneDrive\\Dokumen\\GitHub\\dsaPart2\\src\\local_time.cpp\"",
+  "file": "C:\\Users\\Albert Leonardus\\OneDrive\\Dokumen\\GitHub\\dsaPart2\\src\\local_time.cpp",
+  "output": "CMakeFiles\\dsaPart2_lib.dir\\src\\local_time.cpp.obj"
+},
+{
+  "directory": "C:/Users/Albert Leonardus/OneDrive/Dokumen/GitHub/dsaPart2/build",
+  "command": "C:\\MinGW\\bin\\g++.exe -I\"C:/Users/Albert Leonardus/OneDrive/Dokumen/GitHub/dsaPart2/include\" -g -std=gnu++1z -o CMakeFiles\\dsaPart2_lib.dir\\src\\qualifiers.cpp.obj -c \"C:\\Users\\Albert Leonardus\\OneDrive\\Dokumen\\GitHub\\dsaPart2\\src\\qualifiers.cpp\"",
+  "file": "C:\\Users\\Albert Leonardus\\OneDrive\\Dokumen\\GitHub\\dsaPart2\\src\\qualifiers.cpp",
+  "output": "CMakeFiles\\dsaPart2_lib.dir\\src\\qualifiers.cpp.obj"
+},
+{
+  "directory": "C:/Users/Albert Leonardus/OneDrive/Dokumen/GitHub/dsaPart2/build",
+  "command": "C:\\MinGW\\bin\\g++.exe -I\"C:/Users/Albert Leonardus/OneDrive/Dokumen/GitHub/dsaPart2/include\" -g -std=gnu++1z -o CMakeFiles\\dsaPart2_lib.dir\\src\\registration.cpp.obj -c \"C:\\Users\\Albert Leonardus\\OneDrive\\Dokumen\\GitHub\\dsaPart2\\src\\registration.cpp\"",
+  "file": "C:\\Users\\Albert Leonardus\\OneDrive\\Dokumen\\GitHub\\dsaPart2\\src\\registration.cpp",
+  "output": "CMakeFiles\\dsaPart2_lib.dir\\src\\registration.cpp.obj"
+}
+]

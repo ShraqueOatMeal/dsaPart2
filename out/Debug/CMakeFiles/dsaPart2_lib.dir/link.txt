@@ -1,2 +1,2 @@
-/usr/bin/ar qc libdsaPart2_lib.a CMakeFiles/dsaPart2_lib.dir/src/bracket_stage.cpp.o CMakeFiles/dsaPart2_lib.dir/src/game_log.cpp.o CMakeFiles/dsaPart2_lib.dir/src/group_stage.cpp.o CMakeFiles/dsaPart2_lib.dir/src/local_time.cpp.o CMakeFiles/dsaPart2_lib.dir/src/qualifiers.cpp.o
+/usr/bin/ar qc libdsaPart2_lib.a CMakeFiles/dsaPart2_lib.dir/src/bracket_stage.cpp.o CMakeFiles/dsaPart2_lib.dir/src/game_log.cpp.o CMakeFiles/dsaPart2_lib.dir/src/group_stage.cpp.o CMakeFiles/dsaPart2_lib.dir/src/local_time.cpp.o CMakeFiles/dsaPart2_lib.dir/src/qualifiers.cpp.o CMakeFiles/dsaPart2_lib.dir/src/registration.cpp.o
 /usr/bin/ranlib libdsaPart2_lib.a

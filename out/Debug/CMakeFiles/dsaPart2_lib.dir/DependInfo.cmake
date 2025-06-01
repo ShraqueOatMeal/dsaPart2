@@ -13,6 +13,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/loh-yen-kuan/Coding/dsaPart2/src/group_stage.cpp" "CMakeFiles/dsaPart2_lib.dir/src/group_stage.cpp.o" "gcc" "CMakeFiles/dsaPart2_lib.dir/src/group_stage.cpp.o.d"
   "/home/loh-yen-kuan/Coding/dsaPart2/src/local_time.cpp" "CMakeFiles/dsaPart2_lib.dir/src/local_time.cpp.o" "gcc" "CMakeFiles/dsaPart2_lib.dir/src/local_time.cpp.o.d"
   "/home/loh-yen-kuan/Coding/dsaPart2/src/qualifiers.cpp" "CMakeFiles/dsaPart2_lib.dir/src/qualifiers.cpp.o" "gcc" "CMakeFiles/dsaPart2_lib.dir/src/qualifiers.cpp.o.d"
+  "/home/loh-yen-kuan/Coding/dsaPart2/src/registration.cpp" "CMakeFiles/dsaPart2_lib.dir/src/registration.cpp.o" "gcc" "CMakeFiles/dsaPart2_lib.dir/src/registration.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

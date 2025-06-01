@@ -31,6 +31,12 @@
 },
 {
   "directory": "/home/loh-yen-kuan/Coding/dsaPart2/out/Debug",
+  "command": "/usr/bin/c++  -I/home/loh-yen-kuan/Coding/dsaPart2/include -g -std=gnu++17 -o CMakeFiles/dsaPart2_lib.dir/src/registration.cpp.o -c /home/loh-yen-kuan/Coding/dsaPart2/src/registration.cpp",
+  "file": "/home/loh-yen-kuan/Coding/dsaPart2/src/registration.cpp",
+  "output": "CMakeFiles/dsaPart2_lib.dir/src/registration.cpp.o"
+},
+{
+  "directory": "/home/loh-yen-kuan/Coding/dsaPart2/out/Debug",
   "command": "/usr/bin/c++  -I/home/loh-yen-kuan/Coding/dsaPart2/include -g -std=gnu++17 -o CMakeFiles/dsaPart2.dir/src/main.cpp.o -c /home/loh-yen-kuan/Coding/dsaPart2/src/main.cpp",
   "file": "/home/loh-yen-kuan/Coding/dsaPart2/src/main.cpp",
   "output": "CMakeFiles/dsaPart2.dir/src/main.cpp.o"
