@@ -59,7 +59,7 @@ public:
       if (full())
         return;
       int i = size - 1;
-      int pb = (p.is_early_bird ? 2 : 0) + (p.isWildcard ? 1 : 0);
+      int pb = (p.is_early_bird ? 1 : 0) + (p.isWildcard ? 2 : 0);
       while (i >= 0) {
         int pa = (data[i].is_early_bird ? 1 : 0) + (data[i].isWildcard ? 2 : 0);
         if (pa >= pb)
