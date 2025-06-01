@@ -12,7 +12,6 @@ static int head = 0, rCount = 0;
 static game_log::HistoryBSTNode *historyRoot = nullptr;
 
 static game_log::StatsNode *hashTable[game_log::HASH_SIZE];
-static int hasSize = 0;
 static int statsCount = 0;
 
 unsigned int game_log::hash(const std::string &pid) {
@@ -149,13 +148,33 @@ void game_log::printPlayerHistory(const std::string &pid) {
 
 void game_log::printAllPlayerStats() {
   std::cout << "\n=== Player Performance Stats ===\n";
+  int count[game_log::HASH_SIZE + 1] = {0};
+
   for (int i = 0; i < game_log::HASH_SIZE; ++i) {
     StatsNode *cur = hashTable[i];
     while (cur) {
-      auto &s = cur->data;
-      std::cout << s.id << "  Played:" << s.played << "  Won:" << s.won
-                << "  Lost:" << s.lost << "\n";
+      const std::string &pid = cur->data.id;
+      if (cur->data.played > 0) {
+        try {
+          int num = stoi(pid.substr(1));
+          if (num >= 1 && num <= game_log::HASH_SIZE) {
+            count[num]++;
+          }
+        } catch (...) {
+        }
+      }
       cur = cur->next;
+    }
+  }
+  for (int i = 1; i <= game_log::HASH_SIZE; ++i) {
+    if (count[i] > 0) {
+      char pid[5];
+      sprintf(pid, "P%03d", i);
+      PlayerStats *s = findStats(pid);
+      if (s) {
+        std::cout << pid << "  Played:" << s->played << "  Won:" << s->won
+                  << "  Lost:" << s->lost << "\n";
+      }
     }
   }
 }
@@ -163,7 +182,7 @@ void game_log::printAllPlayerStats() {
 void game_log::printPlayerStats(const std::string &pid) {
   std::cout << "\n=== Stats for " << pid << " ===\n";
   PlayerStats *s = findStats(pid);
-  if (!s && s->played == 0) {
+  if (!s || s->played == 0) {
     std::cout << "No stats found.\n";
     return;
   }
