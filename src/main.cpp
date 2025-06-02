@@ -436,9 +436,6 @@ int main() {
   // Single-Elimination
   bracket_stage::runKnockoutStage(groupAdvance, gCount);
 
-  // Print & save history
-  game_log::printRecentMatches();
-
   // Helper function to sync check-in status for a player ID
   void syncCheckInStatus(
       const string &pid, registration::Player *registeredPlayer,

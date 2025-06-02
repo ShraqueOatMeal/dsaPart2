@@ -11,12 +11,12 @@ registration::~registration() {
 }
 
 void registration::addPlayer(Player &player, Player players[], int &count) {
-  if (count < MAX_PLAYERS) {
+  if (count < MAX_PLAYERS)
     players[count++] = player;
-  } else {
+  else
     cerr << "Cannot add player: Maximum limit reached.\n";
-  }
 }
+
 void registration::withdrawPlayer(const string &id, Player players[],
                                   int &count) {
   for (int i = 0; i < count; ++i) {
