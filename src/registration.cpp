@@ -10,22 +10,6 @@ registration::~registration() {
   // Destructor implementation
 }
 
-void registration::sortById(Player players[], int count) {
-  for (int i = 0; i < count - 1; ++i) {
-    for (int j = i + 1; j < count; ++j) {
-      // Skipping  the 'P'
-      int id_i = stoi(players[i].id.substr(1));
-      int id_j = stoi(players[j].id.substr(1));
-      if (id_i > id_j) {
-        // Swap players[i] and players[j]
-        Player temp = players[i];
-        players[i] = players[j];
-        players[j] = temp;
-      }
-    }
-  }
-}
-
 void registration::addPlayer(Player &player, Player players[], int &count) {
   if (count < MAX_PLAYERS) {
     players[count++] = player;
@@ -38,30 +22,6 @@ void registration::withdrawPlayer(const string &id, Player players[],
   for (int i = 0; i < count; ++i) {
     if (players[i].id == id) {
       players[i] = players[--count]; // Replace with last player
-      return;
-    }
-  }
-  cerr << "Player with ID " << id << " not found.\n";
-}
-void registration::updatePlayer(const Player &player, Player players[],
-                                int count) {
-  for (int i = 0; i < count; ++i) {
-    if (players[i].id == player.id) {
-      players[i] = player;
-      return;
-    }
-  }
-  cerr << "Player with ID " << player.id << " not found.\n";
-}
-void registration::movePlayerToTop(const string &id, Player players[],
-                                   int count) {
-  for (int i = 0; i < count; ++i) {
-    if (players[i].id == id) {
-      Player temp = players[i];
-      for (int j = i; j > 0; --j) {
-        players[j] = players[j - 1];
-      }
-      players[0] = temp;
       return;
     }
   }

@@ -86,11 +86,8 @@ public:
   registration();
   ~registration();
 
-  static void sortById(Player players[], int count);
   static void addPlayer(Player &player, Player players[], int &count);
   static void withdrawPlayer(const string &id, Player players[], int &count);
-  static void updatePlayer(const Player &player, Player players[], int count);
-  static void movePlayerToTop(const string &id, Player players[], int count);
   static void checkInPlayer(const string &id, Player players[], int count);
 
   // Print the list of registered players
